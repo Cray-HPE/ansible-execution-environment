@@ -1,0 +1,10 @@
+--index-url https://arti.dev.cray.com:443/artifactory/api/pypi/pypi-remote/simple
+-c constraints.txt
+ansible
+dnspython
+hvac
+kubernetes
+netaddr
+openshift
+pexpect
+redis
