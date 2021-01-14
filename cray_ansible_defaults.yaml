@@ -1,0 +1,2 @@
+# Defaults for global Cray managed variables
+cray_cfs_image: false
