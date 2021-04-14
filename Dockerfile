@@ -1,5 +1,5 @@
-# Copyright 2019-2020 Hewlett Packard Enterprise LP
-FROM dtr.dev.cray.com/baseos/sles15sp2:sles15sp2
+# Copyright 2019-2021, Hewlett Packard Enterprise Development LP
+FROM arti.dev.cray.com/baseos-docker-master-local/sles15sp2:sles15sp2
 
 RUN zypper ar --no-gpgcheck http://car.dev.cray.com/artifactory/csm/SCMS/sle15_sp2_ncn/x86_64/dev/master/ sles15_sp2_ncn && zypper refresh
 RUN zypper in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base csm-ssh-keys
