@@ -43,7 +43,13 @@ do
   echo "Waiting for Inventory"
   sleep 3
 done
-echo "Inventory available"
+
+COMPLETE=$(cat $INVENTORY_COMPLETE_FILE)
+if [ -n "${COMPLETE}" ] && [ $COMPLETE -ne 0 ]; then
+  echo "Inventory generation failed. Exiting";
+  exit 1
+fi
+echo "Inventory generation completed"
 
 mkdir -p /root/.ssh
 cp -a /inventory/ssh/* /root/.ssh
