@@ -23,7 +23,7 @@
 NAME ?= cray-aee
 DOCKER_VERSION ?= $(shell head -1 .docker_version)
 
-all : clone_cms_meta_tools lint image
+all : clone_cms_meta_tools runbuildprep lint image
 
 # If you wish to perform a local build, you will need to clone or copy the contents of the
 # cms_meta_tools repo to ./cms_meta_tools
