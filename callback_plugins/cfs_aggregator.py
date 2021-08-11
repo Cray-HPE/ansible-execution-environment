@@ -112,8 +112,9 @@ class CallbackModule(CallbackBase):
             self.make_failed(host)
 
     def v2_playbook_on_stats(self, stats):
-        handler = CfsComponentsHandler()
-        handler.update_component_status(stats)
+        if os.environ.get('INVENTORY_TYPE', '') != 'image':
+            handler = CfsComponentsHandler()
+            handler.update_component_status(stats)
 
         # In case we missed any hosts via the processed field, set them. This
         # should generally not be needed, but newer versions of ansible may
@@ -238,4 +239,6 @@ class CfsComponentsHandler(object):
             LOGGER.warning('CFS Status Aggregator encountered a problem. '
                            'The Ansible play has completed, '
                            'and the following errors impact only status reporting.')
+            LOGGER.warning('These warnings can be ignored if the component is not expected to be '
+                           'managed by CFS and is not expected in the CFS components database.')
         self.exception_header = True
