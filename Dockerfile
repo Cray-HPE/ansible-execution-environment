@@ -22,7 +22,7 @@
 
 FROM arti.dev.cray.com/baseos-docker-master-local/sles15sp2:sles15sp2 as base
 
-RUN zypper ar --no-gpgcheck http://car.dev.cray.com/artifactory/csm/SCMS/sle15_sp2_ncn/x86_64/dev/master/ sles15_sp2_ncn && zypper refresh
+RUN zypper ar --no-gpgcheck https://artifactory.algol60.net/artifactory/csm-rpms/hpe/stable/ hpe-csm-stable && zypper refresh
 RUN zypper in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base csm-ssh-keys
 RUN zypper refresh
 # Apply security patches
@@ -32,9 +32,9 @@ RUN zypper clean
 COPY requirements.txt constraints.txt /
 ENV LANG=C.utf8
 RUN PIP_INDEX_URL=https://arti.dev.cray.com:443/artifactory/api/pypi/pypi-remote/simple \
-    pip install --no-cache-dir -U pip wheel && \
-    pip install --no-cache-dir -r requirements.txt && \
-    find . -iname '/opt/cray/ansible/requirements/*.txt' -exec  pip install --no-cache-dir -r "{}" \;
+    pip3 install --no-cache-dir -U pip wheel && \
+    pip3 install --no-cache-dir -r requirements.txt && \
+    find . -iname '/opt/cray/ansible/requirements/*.txt' -exec  pip3 install --no-cache-dir -r "{}" \;
 
 
 # Stage our runtime configuration
