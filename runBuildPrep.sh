@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Copyright 2021 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -20,21 +21,24 @@
 #
 # (MIT License)
 
-# If you wish to perform a local build, you will need to clone or copy the contents of the
-# cms-meta-tools repo to ./cms_meta_tools
+set -ex
 
-NAME ?= cray-aee
-DOCKER_VERSION ?= $(shell head -1 .docker_version)
+# First run update_external_versions to generate our csm-ssh-keys.version file
+./cms_meta_tools/latest_version/update_external_versions.sh
 
-all : runbuildprep lint image
+# Then before we run update_versions, we need to massage the csm-ssh-keys.version
+# file to convert it from a docker version to an RPM version
+# (i.e. strip off the build tag, if any, and append -1)
+sed -i 's/^\([0-9][0-9]*[.][0-9][0-9]*[.][0-9][0-9]*\).*$/\1-1/' csm-ssh-keys.version
 
-runbuildprep:
-		# We call a local copy of runBuildPrep because we need to do some
-		# fancy footwork with the csm-ssh-keys version
-		./runBuildPrep.sh
+# Show the modified version
+cat csm-ssh-keys.version
 
-lint:
-		./cms_meta_tools/scripts/runLint.sh
+# And now we delete our update_external_versions.conf file, so that when
+# we call runBuildPrep.sh in cms_meta_tools it does not run a second time
+rm -v update_external_versions.conf
 
-image:
-		docker build --pull ${DOCKER_ARGS} --tag '${NAME}:${DOCKER_VERSION}' .
+# Finally, call the real runBuildPrep in cms_meta_tools:
+./cms_meta_tools/scripts/runBuildPrep.sh
+
+exit 0
