@@ -22,9 +22,19 @@
 
 FROM arti.dev.cray.com/baseos-docker-master-local/sles15sp2:sles15sp2 as base
 
-RUN zypper ar --no-gpgcheck https://artifactory.algol60.net/artifactory/csm-rpms/hpe/stable/ hpe-csm-stable && zypper refresh
-RUN zypper in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base csm-ssh-keys
-RUN zypper refresh
+# Pin the version of csm-ssh-keys being installed. The actual version is substituted by
+# the runBuildPrep script at build time
+ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
+
+RUN zypper ar --no-gpgcheck https://artifactory.algol60.net/artifactory/csm-rpms/hpe/stable/ hpe-csm-stable && zypper --non-interactive refresh -f
+RUN zypper in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base 
+
+RUN zypper in -f --no-confirm csm-ssh-keys-@RPM_VERSION@
+# And lock the version, just to be certain it is not upgraded inadvertently by some later
+# zypper command
+RUN zypper al csm-ssh-keys
+
+RUN zypper --non-interactive refresh -f
 # Apply security patches
 RUN zypper patch -y --with-update --with-optional
 RUN zypper clean
@@ -35,7 +45,6 @@ RUN PIP_INDEX_URL=https://arti.dev.cray.com:443/artifactory/api/pypi/pypi-remote
     pip3 install --no-cache-dir -U pip wheel && \
     pip3 install --no-cache-dir -r requirements.txt && \
     find . -iname '/opt/cray/ansible/requirements/*.txt' -exec  pip3 install --no-cache-dir -r "{}" \;
-
 
 # Stage our runtime configuration
 COPY ansible.cfg /etc/ansible/
