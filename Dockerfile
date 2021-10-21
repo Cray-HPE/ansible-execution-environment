@@ -42,7 +42,7 @@ RUN zypper in -f --no-confirm ${CSM_SSH_KEYS_RPM_URL}
 RUN zypper al csm-ssh-keys
 
 # Remove rpm package
-RUN zypper rm -f --no-confirm rpm
+RUN zypper rm --no-confirm rpm
 
 RUN zypper in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh less catatonit rsync glibc-locale-base 
 RUN zypper --non-interactive refresh -f
