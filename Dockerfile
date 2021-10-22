@@ -24,17 +24,27 @@ FROM arti.dev.cray.com/baseos-docker-master-local/sles15sp2:sles15sp2 as base
 
 # Pin the version of csm-ssh-keys being installed. The actual version is substituted by
 # the runBuildPrep script at build time
-ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
+ARG CSM_SSH_KEYS_RPM_URL=@RPM_URL@
 
-RUN zypper ar --no-gpgcheck https://artifactory.algol60.net/artifactory/csm-rpms/hpe/stable/ hpe-csm-stable && zypper --non-interactive refresh -f
-RUN zypper in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base 
+# First install just the packages we need to install csm-ssh-keys
+RUN zypper in --no-confirm curl rpm
 
-RUN zypper in -f --no-confirm csm-ssh-keys-@RPM_VERSION@
+# Get HPE key to install signed RPMs
+RUN curl -XGET "https://arti.dev.cray.com:443/artifactory/dst-misc-stable-local/SigningKeys/HPE-SHASTA-RPM-PROD.asc" --output HPE-SHASTA-RPM-PROD.asc
+
+# Import key
+RUN rpm --import HPE-SHASTA-RPM-PROD.asc
+
+# Install csm-ssh-keys
+RUN zypper in -f --no-confirm ${CSM_SSH_KEYS_RPM_URL}
 # And lock the version, just to be certain it is not upgraded inadvertently by some later
 # zypper command
 RUN zypper al csm-ssh-keys
 
+# Now install the rest of the packages
+RUN zypper in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh less catatonit rsync glibc-locale-base 
 RUN zypper --non-interactive refresh -f
+
 # Apply security patches
 RUN zypper patch -y --with-update --with-optional
 RUN zypper clean
