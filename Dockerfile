@@ -34,10 +34,9 @@ RUN zypper in -f --no-confirm csm-ssh-keys-@RPM_VERSION@
 # zypper command
 RUN zypper al csm-ssh-keys
 
-RUN zypper --non-interactive refresh -f
-# Apply security patches
-RUN zypper patch -y --with-update --with-optional
-RUN zypper clean
+# Apply security patches. cms-meta-tools repo must be cloned into ./cms_meta_tools
+COPY cms_meta_tools/utils/zypper-patch.sh /
+RUN /zypper-patch.sh && rm /zypper-patch.sh
 
 COPY requirements.txt constraints.txt /
 ENV LANG=C.utf8
