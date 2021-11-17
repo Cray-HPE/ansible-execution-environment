@@ -8,3 +8,4 @@ netaddr
 openshift
 pexpect
 redis
+jmespath
