@@ -26,7 +26,7 @@ FROM arti.dev.cray.com/baseos-docker-master-local/sles15sp2:sles15sp2 as base
 # the runBuildPrep script at build time
 ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
 
-RUN zypper ar --no-gpgcheck https://artifactory.algol60.net/artifactory/csm-rpms/hpe/stable/ hpe-csm-stable && zypper --non-interactive refresh
+RUN zypper ar --no-gpgcheck https://artifactory.algol60.net/artifactory/csm-rpms/hpe/stable/sle-15sp2/ hpe-csm-stable && zypper --non-interactive refresh
 RUN zypper in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base 
 
 RUN zypper in -f --no-confirm csm-ssh-keys-@RPM_VERSION@
