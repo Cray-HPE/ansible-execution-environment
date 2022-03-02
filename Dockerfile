@@ -20,7 +20,7 @@
 #
 # (MIT License)
 
-FROM arti.dev.cray.com/baseos-docker-master-local/sles15sp2:sles15sp2 as base
+FROM artifactory.algol60.net/registry.suse.com/suse/sle15:15.3 as base
 
 # Pin the version of csm-ssh-keys being installed. The actual version is substituted by
 # the runBuildPrep script at build time
