@@ -41,8 +41,7 @@ RUN /zypper-refresh-patch-clean.sh && rm /zypper-refresh-patch-clean.sh
 
 COPY requirements.txt constraints.txt /
 ENV LANG=C.utf8
-RUN PIP_INDEX_URL=https://arti.dev.cray.com:443/artifactory/api/pypi/pypi-remote/simple \
-    pip3 install --no-cache-dir -U pip wheel && \
+RUN pip3 install --no-cache-dir -U pip wheel && \
     pip3 install --no-cache-dir -r requirements.txt && \
     find . -iname '/opt/cray/ansible/requirements/*.txt' -exec  pip3 install --no-cache-dir -r "{}" \;
 
