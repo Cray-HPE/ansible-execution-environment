@@ -53,11 +53,13 @@ fi
 echo "Inventory generation completed"
 
 mkdir -p /root/.ssh
+chmod 600 /inventory/ssh/id_ecdsa
 cp -a /inventory/ssh/* /root/.ssh
 chmod 600 /root/.ssh/id_ecdsa
 echo "SSH keys migrated to /root/.ssh"
 
 cp -r /inventory/* /etc/ansible/
+chmod 600 /etc/ansible/ssh/id_ecdsa
 
 if [ ! -d "${GROUPVARS_DIR}" ]; then
   mkdir $GROUPVARS_DIR
