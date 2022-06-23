@@ -1,4 +1,4 @@
-@Library('cms-meta-tools') _
+@Library('cms-meta-tools@feature/rpm_version_and_release') _
 @Library('csm-shared-library') __
 
 pipeline {
@@ -29,6 +29,11 @@ pipeline {
             steps {
                 // This function is defined in cms-meta-tools:vars/setVersionFiles.groovy
                 setVersionFiles()
+                sh(returnStdout: true, script: "head -1 .docker_version")
+                sh(returnStdout: true, script: "head -1 .rpm_version")
+                sh(returnStdout: true, script: "head -1 .rpm_release")
+                sh(returnStdout: true, script: "head -1 .chart_version")
+                sh(returnStdout: true, script: "head -1 .version")
             }
         }
 
