@@ -28,12 +28,13 @@ pipeline {
         stage("Set Versions") {
             steps {
                 // This function is defined in cms-meta-tools:vars/setVersionFiles.groovy
+                writeFile(file: ".version", text: "1.11.0-alpha.245")
                 setVersionFiles()
-                sh(returnStdout: true, script: "head -1 .docker_version")
-                sh(returnStdout: true, script: "head -1 .rpm_version")
-                sh(returnStdout: true, script: "head -1 .rpm_release")
-                sh(returnStdout: true, script: "head -1 .chart_version")
-                sh(returnStdout: true, script: "head -1 .version")
+                sh(returnStdout: false, script: "head -1 .docker_version")
+                sh(returnStdout: false, script: "head -1 .rpm_version")
+                sh(returnStdout: false, script: "head -1 .rpm_release")
+                sh(returnStdout: false, script: "head -1 .chart_version")
+                sh(returnStdout: false, script: "head -1 .version")
             }
         }
 
