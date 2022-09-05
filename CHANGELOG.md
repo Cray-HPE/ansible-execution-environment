@@ -4,6 +4,9 @@ associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
 ## [Unreleased]
+### Added
+- Added playbook information to the ansible container logs
+
 ### Changed
 - Spelling corrections.
 
