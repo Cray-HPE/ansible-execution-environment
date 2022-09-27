@@ -63,6 +63,8 @@ if [ $? -ne 0 ]; then
     exit;
 fi
 
+echo "Running $SESSION_PLAYBOOK from repo $SESSION_CLONE_URL"
+
 "$@" 2>&1
 ANSIBLE_EXIT=$?
 
