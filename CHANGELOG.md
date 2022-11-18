@@ -5,6 +5,7 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 ### Added
+- Added the ARA plugin
 - Added playbook information to the ansible container logs
 
 ### Changed

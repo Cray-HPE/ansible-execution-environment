@@ -54,6 +54,10 @@ COPY /strategy_plugins/*            /usr/share/ansible/plugins/strategy/
 COPY /modules/*                     /usr/share/ansible/plugins/modules/
 RUN mv /opt/cray/ansible/modules/*    /usr/share/ansible/plugins/modules/
 
+# Stage ARA plugins
+RUN mkdir -p /usr/share/ansible/plugins/ara/
+RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/ara/
+
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /
 
