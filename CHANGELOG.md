@@ -9,6 +9,7 @@ this does, see the README.md entry.
 
 ### Changed
 - Spelling corrections.
+- Changed entrypoint and callback to support multiple playbooks in one container
 
 ## [1.3.0] - 2022-07-27
 ### Added
