@@ -28,7 +28,7 @@ FROM artifactory.algol60.net/registry.suse.com/suse/sle15:15.3 as base
 ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
 
 RUN zypper ar --no-gpgcheck https://artifactory.algol60.net/artifactory/csm-rpms/hpe/stable/sle-15sp2/ hpe-csm-stable && zypper --non-interactive refresh
-RUN zypper in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base 
+RUN zypper in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base jq
 
 RUN zypper in -f --no-confirm csm-ssh-keys-@RPM_VERSION@
 # And lock the version, just to be certain it is not upgraded inadvertently by some later
