@@ -1,4 +1,5 @@
 ansible==2.9.13
+ara==1.5.8
 asn1crypto==0.24.0
 bcrypt==3.1.6
 certifi==2019.11.28

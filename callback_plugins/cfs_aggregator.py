@@ -22,7 +22,6 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 #
 import os
-import redis
 import logging
 import requests
 from requests.adapters import HTTPAdapter
@@ -37,17 +36,13 @@ DOCUMENTATION = '''
     description:
         - This callback tracks running, failure, and success events for each host
     type: aggregate
-    requirements:
-      - A redis server IP needs to be provided via the REDIS_IP environment variable.
-      - A redis server port needs to be provided via the REDIS_PORT environment variable.
-      - Users must manually remove values from the Redis server to clear state
 '''
 
 LOGGER = logging.getLogger(__name__)
 
 
 class CallbackModule(CallbackBase):
-    CALLBACK_VERSION = 1.0
+    CALLBACK_VERSION = 2.0
     CALLBACK_TYPE = 'aggregate'
     CALLBACK_NAME = 'cfs'
 
@@ -58,88 +53,14 @@ class CallbackModule(CallbackBase):
         # make sure the expected objects are present, calling the base's __init__
         super(CallbackModule, self).__init__()
 
-        # This is the set of hosts that we have reported upstream to the calling
-        # CFS parent. For reasons of brevity, we only want to communicate the
-        # set of hosts which we have already reported up.
-        self.running = set()
-
-        # This is the set of hosts that we have reported failures on; these can
-        # be explicit failures, or failures as a function of unreachable. Rather
-        # than simply report this upstream, we cache a local copy of this
-        # variable so that we categorically know which of the running operations
-        # have succeeded.
-        self.failed = set()
-
         # Capture the Session Name
         self.cfs_session_name = os.environ.get('SESSION_NAME', None)
-
-        # Capture the Redis Client ip/port
-        self.redis_ip = os.environ.get('REDIS_IP', None)
-        self.redis_port = os.environ.get('REDIS_PORT', 6379)
-
-        # Obtain Redis Reporting
-        if self.redis_ip:
-            self.redis_client = redis.Redis(self.redis_ip, port=self.redis_port, db=0)
-        else:
-            self.redis_client = None
-
-        # Setup key shortcuts
-        self.running_key = 'sessions/%s/running' % self.cfs_session_name
-        self.success_key = 'sessions/%s/success' % self.cfs_session_name
-        self.failed_key = 'sessions/%s/failed' % self.cfs_session_name
-
-    def make_running(self, host):
-        if self.redis_client and host not in self.running:
-            _ = self.redis_client.sadd(self.running_key, host)
-        self.running.add(host)
-
-    def make_failed(self, host):
-        self.make_running(host)
-        if self.redis_client and host not in self.failed:
-            _ = self.redis_client.sadd(self.failed_key, host)
-        self.failed.add(host)
-
-    def v2_runner_on_ok(self, result):
-        host = result._host.get_name()
-        self.make_running(host)
-
-    def v2_runner_on_skipped(self, result):
-        host = result._host.get_name()
-        self.make_running(host)
-
-    def v2_runner_on_failed(self, result, ignore_errors=False, *args, **kwargs):
-        host = result._host.get_name()
-        if not ignore_errors:
-            self.make_failed(host)
 
     def v2_playbook_on_stats(self, stats):
         disable_state_recording = (os.environ.get('DISABLE_STATE_RECORDING', 'false').lower() == 'true')
         if not disable_state_recording:
             handler = CfsComponentsHandler()
             handler.update_component_status(stats)
-
-        # In case we missed any hosts via the processed field, set them. This
-        # should generally not be needed, but newer versions of ansible may
-        # extend the callback spec to implement new callback operations not
-        # implemented outside of this function. Putting this here gives us a
-        # little bit of future proofing.
-        for host in stats.processed:
-            self.make_running(host)
-
-        # All hosts which are have run without failure have succeeded
-        if self.redis_client:
-            success = self.running - self.failed
-            if success:
-                _ = self.redis_client.sadd(self.success_key, *success)
-
-        # This is the last stop on the AEEeeee train, all passengers must exit
-        # quickly and safely onto the next boarding platform
-        if self.redis_client and self.running:
-            _ = self.redis_client.srem(self.running_key, *list(self.running))
-
-    def v2_runner_on_unreachable(self, result):
-        host = result._host.get_name()
-        self.make_failed(host)
 
 
 class CfsComponentsHandler(object):
