@@ -15,4 +15,3 @@ this does, see the README.md entry.
 ## [1.3.0] - 2022-07-27
 ### Added
 - Initial migration to gitflow versoining.
-
