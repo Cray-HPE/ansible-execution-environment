@@ -28,7 +28,7 @@ FROM artifactory.algol60.net/registry.suse.com/suse/sle15:15.3 as base
 ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
 
 RUN zypper ar --no-gpgcheck https://artifactory.algol60.net/artifactory/csm-rpms/hpe/stable/sle-15sp2/ hpe-csm-stable && zypper --non-interactive refresh
-RUN zypper in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base 
+RUN zypper in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base jq
 
 RUN zypper in -f --no-confirm csm-ssh-keys-@RPM_VERSION@
 # And lock the version, just to be certain it is not upgraded inadvertently by some later
@@ -53,6 +53,10 @@ COPY /callback_plugins/*            /usr/share/ansible/plugins/callback/
 COPY /strategy_plugins/*            /usr/share/ansible/plugins/strategy/
 COPY /modules/*                     /usr/share/ansible/plugins/modules/
 RUN mv /opt/cray/ansible/modules/*    /usr/share/ansible/plugins/modules/
+
+# Stage ARA plugins
+RUN mkdir -p /usr/share/ansible/plugins/ara/
+RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/ara/
 
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /
