@@ -3,7 +3,7 @@ This is the changelog for the configuration framework service (CFS) for its
 associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
-## [Unreleased]
+## [1.4.0] - 2022-01-13
 ### Added
 - Added the ARA plugin
 - Added playbook information to the ansible container logs
