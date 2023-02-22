@@ -46,7 +46,8 @@ CSM_REPO_URI="https://${CREDS}@artifactory.algol60.net/artifactory/csm-rpms/hpe/
 
 zypper --non-interactive ar --no-gpgcheck "${CSM_REPO_URI}" csm
 zypper --non-interactive --gpg-auto-import-keys refresh
-zypper --non-interactive in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base jq
+zypper ar --no-gpgcheck https://arti.dev.cray.com:443/artifactory/mirror-SUSE/Products/SLE-Module-Legacy/15-SP3/x86_64/product/ sle-legacy && zypper --non-interactive refresh
+zypper --non-interactive in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base jq libcgroup-tools
 zypper --non-interactive in -f --no-confirm csm-ssh-keys-${CSM_SSH_KEYS_VERSION}
 # Lock the version of csm-ssh-keys, just to be certain it is not upgraded inadvertently somehow later
 zypper --non-interactive al csm-ssh-keys

@@ -41,7 +41,7 @@ for layer in $(echo "${@}" | jq -c .[]); do
     export ANSIBLE_ROLES_PATH=${LAYER_DIR}/roles
 
     echo "Running $SESSION_PLAYBOOK from repo $SESSION_CLONE_URL"
-    ansible-playbook $PLAYBOOK_PATH $ANSIBLE_ARGS
+    cgexec -g memory:ansible_profile ansible-playbook $PLAYBOOK_PATH $ANSIBLE_ARGS
     ANSIBLE_EXIT=$?
     if [ $ANSIBLE_EXIT -ne 0 ]; then
         echo "Playbook $SESSION_PLAYBOOK from repo $SESSION_CLONE_URL failed"
