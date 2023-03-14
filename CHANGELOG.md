@@ -10,6 +10,8 @@ associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
 ## [Unreleased]
+
+## [1.4.1] - 2023-03-14
 ### Changed
 - Use csm-ssh-keys version 1.5 (CASMCMS-8462)
 - Use artifactory mirror in Dockerfile to avoid authentication errors (CASMCMS-8464)
@@ -17,7 +19,7 @@ this does, see the README.md entry.
 ### Removed
 - Removed vestigial files from former dynamic versioning system (CASMCMS-8462)
 
-## [1.4.0] - 2022-01-13
+## [1.4.0] - 2023-01-13
 ### Added
 - Added the ARA plugin
 - Added playbook information to the ansible container logs
