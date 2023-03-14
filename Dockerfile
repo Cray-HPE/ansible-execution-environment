@@ -1,7 +1,7 @@
 #
 # MIT License
 #
-# (C) Copyright 2019-2022 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2019-2023 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -27,7 +27,7 @@ FROM artifactory.algol60.net/registry.suse.com/suse/sle15:15.3 as base
 # the runBuildPrep script at build time
 ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
 
-RUN zypper ar --no-gpgcheck https://artifactory.algol60.net/artifactory/csm-rpms/hpe/stable/sle-15sp2/ hpe-csm-stable && zypper --non-interactive refresh
+RUN zypper ar --no-gpgcheck https://arti.hpc.amslabs.hpecorp.net/artifactory/csm-rpms-remote/hpe/stable/sle-15sp3/ hpe-csm-stable && zypper --non-interactive refresh
 RUN zypper in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base jq
 
 RUN zypper in -f --no-confirm csm-ssh-keys-@RPM_VERSION@
