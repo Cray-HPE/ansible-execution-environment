@@ -9,6 +9,14 @@ This is the changelog for the configuration framework service (CFS) for its
 associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
+## [Unreleased]
+### Changed
+- Use csm-ssh-keys version 1.5 (CASMCMS-8462)
+- Use artifactory mirror in Dockerfile to avoid authentication errors (CASMCMS-8464)
+
+### Removed
+- Removed vestigial files from former dynamic versioning system (CASMCMS-8462)
+
 ## [1.4.0] - 2022-01-13
 ### Added
 - Added the ARA plugin
