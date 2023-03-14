@@ -12,6 +12,7 @@ this does, see the README.md entry.
 ## [Unreleased]
 ### Changed
 - Use csm-ssh-keys version 1.5 (CASMCMS-8462)
+- Use artifactory mirror in Dockerfile to avoid authentication errors (CASMCMS-8464)
 
 ### Removed
 - Removed vestigial files from former dynamic versioning system (CASMCMS-8462)
