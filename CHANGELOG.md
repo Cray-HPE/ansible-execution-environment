@@ -10,6 +10,8 @@ associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
 ## [Unreleased]
+
+## [1.4.2] - 2023-03-17
 ### Changed
 - CASMCMS-8471: Use artifactory authentication instead of building from unauthenticated artifactory mirrors
 
