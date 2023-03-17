@@ -23,21 +23,19 @@
 #
 FROM artifactory.algol60.net/registry.suse.com/suse/sle15:15.3 as base
 
+# Set the SLES SP number
+ARG SP=3
 # Pin the version of csm-ssh-keys being installed. The actual version is substituted by
 # the runBuildPrep script at build time
 ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
 
-RUN zypper ar --no-gpgcheck https://arti.hpc.amslabs.hpecorp.net/artifactory/csm-rpms-remote/hpe/stable/sle-15sp3/ hpe-csm-stable && zypper --non-interactive refresh
-RUN zypper in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base jq
-
-RUN zypper in -f --no-confirm csm-ssh-keys-@RPM_VERSION@
-# And lock the version, just to be certain it is not upgraded inadvertently by some later
-# zypper command
-RUN zypper al csm-ssh-keys
-
-# Apply security patches
+# Do zypper operations using a wrapper script, to isolate the necessary artifactory authentication
+COPY zypper-docker-build.sh /
+# The above script calls the following script, so we need to copy it as well
 COPY zypper-refresh-patch-clean.sh /
-RUN /zypper-refresh-patch-clean.sh && rm /zypper-refresh-patch-clean.sh
+RUN --mount=type=secret,id=ARTIFACTORY_READONLY_USER --mount=type=secret,id=ARTIFACTORY_READONLY_TOKEN \
+    ./zypper-docker-build.sh && \
+    rm /zypper-docker-build.sh /zypper-refresh-patch-clean.sh
 
 COPY requirements.txt constraints.txt /
 ENV LANG=C.utf8
