@@ -12,9 +12,11 @@ this does, see the README.md entry.
 ## [Unreleased]
 ### Added
 - Infrastructure required to do community installs of ansible modules to include SOPS
+
 ### Changed
 - Disabled concurrent Jenkins builds on same branch/commit
 - Added build timeout to avoid hung builds
+- Moved to the v3 CFS api
 
 ### Dependencies
 Bumped dependency patch versions:

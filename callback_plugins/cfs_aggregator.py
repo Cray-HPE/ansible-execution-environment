@@ -1,7 +1,7 @@
 #
 # MIT License
 #
-# (C) Copyright 2019-2022 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2019-2023 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -31,7 +31,7 @@ from ansible.plugins.callback import CallbackBase
 
 DOCUMENTATION = '''
     callback: cfs_aggregator
-    short_description: Per host status aggregation to a Redis Server
+    short_description: Per host status aggregation to the CFS API
     version_added: "2.5"
     description:
         - This callback tracks running, failure, and success events for each host
@@ -67,7 +67,7 @@ class CfsComponentsHandler(object):
     # COMPONENT STATUS HANDLING
     def __init__(self):
         self.shared_directory = '/inventory'
-        self.endpoint = 'http://cray-cfs-api/v2/components/'
+        self.endpoint = 'http://cray-cfs-api/v3/components/'
         self.max_retries = 10
         self.exception_header = False
 
@@ -120,7 +120,7 @@ class CfsComponentsHandler(object):
         response = self.session.get(self.endpoint + host)
         response.raise_for_status()
         data = response.json()
-        return data['errorCount'] + 1
+        return data['error_count'] + 1
 
     def _send_update(self, host, session_failed, success):
         error_count = None
@@ -140,15 +140,15 @@ class CfsComponentsHandler(object):
             else:
                 error_count = 0
         data = {
-            'stateAppend': {
-                'sessionName': self.cfs_session_name,
-                'cloneUrl': self.clone_url,
+            'state_append': {
+                'session_name': self.cfs_session_name,
+                'clone_url': self.clone_url,
                 'playbook': self.playbook,
                 'commit': commit_id
             }
         }
         if error_count is not None:
-            data['errorCount'] = error_count
+            data['error_count'] = error_count
         try:
             response = self.session.patch(self.endpoint + host, json=data)
             response.raise_for_status()

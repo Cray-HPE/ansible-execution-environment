@@ -33,7 +33,7 @@ fi
 ANSIBLE_DIR=/etc/ansible
 
 for layer in $(echo "${@}" | jq -c .[]); do
-    export SESSION_CLONE_URL=$(echo "${layer}" | jq -r .cloneUrl)
+    export SESSION_CLONE_URL=$(echo "${layer}" | jq -r .clone_url)
     export SESSION_PLAYBOOK=$(echo "${layer}" | jq -r .playbook)
     export LAYER_CURRENT=$(echo "${layer}" | jq -r .layer)
     LAYER_DIR=${ANSIBLE_DIR}/layer${LAYER_CURRENT}
