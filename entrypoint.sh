@@ -2,7 +2,7 @@
 #
 # MIT License
 #
-# (C) Copyright 2019-2022 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2019-2023 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -45,6 +45,11 @@ for layer in $(echo "${@}" | jq -c .[]); do
     ANSIBLE_EXIT=$?
     if [ $ANSIBLE_EXIT -ne 0 ]; then
         echo "Playbook $SESSION_PLAYBOOK from repo $SESSION_CLONE_URL failed"
+        if [ -n "$DEBUG_WAIT_TIME" ] && [ $DEBUG_WAIT_TIME -gt 0 ]; then
+            echo "This session has failed and will remain running for $DEBUG_WAIT_TIME seconds to allow debugging"
+            echo "Touch \"/tmp/complete\" to complete the session early and cleanly"
+            timeout $DEBUG_WAIT_TIME bash -c 'until [ -f /tmp/complete ]; do sleep 1; done'
+        fi
         exit $ANSIBLE_EXIT;
     fi
 done
