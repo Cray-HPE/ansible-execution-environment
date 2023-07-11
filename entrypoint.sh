@@ -40,7 +40,11 @@ for layer in $(echo "${@}" | jq -c .[]); do
     PLAYBOOK_PATH=${LAYER_DIR}/${SESSION_PLAYBOOK}
     export ANSIBLE_ROLES_PATH=${LAYER_DIR}/roles
 
-    echo "Running $SESSION_PLAYBOOK from repo $SESSION_CLONE_URL"
+    if [[ "$LAYER_CURRENT" == "_debug" ]]; then
+        echo "Running $SESSION_PLAYBOOK from the debug playbooks"
+    else
+        echo "Running $SESSION_PLAYBOOK from repo $SESSION_CLONE_URL"
+    fi
     ansible-playbook $PLAYBOOK_PATH $ANSIBLE_ARGS
     ANSIBLE_EXIT=$?
     if [ $ANSIBLE_EXIT -ne 0 ]; then

@@ -13,6 +13,7 @@ this does, see the README.md entry.
 ### Added
 - Infrastructure required to do community installs of ansible modules to include SOPS
 - Added support for DEBUG_WAIT_TIME
+- Added support for special debug playbooks
 
 ### Changed
 - Disabled concurrent Jenkins builds on same branch/commit
