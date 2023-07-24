@@ -32,6 +32,10 @@ fi
 
 ANSIBLE_DIR=/etc/ansible
 
+export ARA_DEFAULT_LABELS=$SESSION_NAME
+export ARA_RECORD_CONTROLLER=false
+export ARA_RECORD_USER=false
+
 for layer in $(echo "${@}" | jq -c .[]); do
     export SESSION_CLONE_URL=$(echo "${layer}" | jq -r .clone_url)
     export SESSION_PLAYBOOK=$(echo "${layer}" | jq -r .playbook)
