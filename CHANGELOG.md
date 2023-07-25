@@ -9,7 +9,11 @@ This is the changelog for the configuration framework service (CFS) for its
 associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
-## [Unreleased]
+## [1.4.3] - 2023-07-20
+### Dependencies
+- CASMCMS-8717: Bump `paramiko` from 2.4.2 to 2.7.2 and `cryptography` from `cryptography` from 3.2 to 41.0.2
+  to fix [Improper Certificate Validation CVE](https://security.snyk.io/vuln/SNYK-PYTHON-CRYPTOGRAPHY-5777683).
+  In order to allow this, moved Docker image from Python 3.6 to 3.9.
 
 ## [1.4.2] - 2023-03-17
 ### Changed

@@ -46,7 +46,7 @@ CSM_REPO_URI="https://${CREDS}@artifactory.algol60.net/artifactory/csm-rpms/hpe/
 
 zypper --non-interactive ar --no-gpgcheck "${CSM_REPO_URI}" csm
 zypper --non-interactive --gpg-auto-import-keys refresh
-zypper --non-interactive in --no-confirm python3-devel python3-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base jq
+zypper --non-interactive in --no-confirm python39-devel python39-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base jq
 zypper --non-interactive in -f --no-confirm csm-ssh-keys-${CSM_SSH_KEYS_VERSION}
 # Lock the version of csm-ssh-keys, just to be certain it is not upgraded inadvertently somehow later
 zypper --non-interactive al csm-ssh-keys
@@ -55,3 +55,10 @@ zypper --non-interactive al csm-ssh-keys
 # Remove all repos & scrub the zypper directory 
 zypper --non-interactive rr --all
 rm -f /etc/zypp/repos.d/*
+# Manually set the links that SLES neglects to do for us
+update-alternatives --install /usr/bin/easy_install easy_install /usr/bin/easy_install-3.9 99
+update-alternatives --install /usr/bin/pip pip /usr/bin/pip3.9 99
+update-alternatives --install /usr/bin/pip3 pip3 /usr/bin/pip3.9 99
+update-alternatives --install /usr/bin/pydoc3 pydoc3 /usr/bin/pydoc3.9 99
+update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 99
+update-alternatives --install /usr/bin/python3-config python3-config /usr/bin/python3.9-config 99
