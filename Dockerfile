@@ -60,7 +60,7 @@ RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/
 COPY cray_ansible_defaults.yaml /
 
 # Add community modules into environment using ansible community install roles
-RUN ansible-galaxy collection install community.sops
+RUN ansible-galaxy collection install community.sops:1.6.3
 
 # Establish runtime Scripts and Entrypoints
 COPY entrypoint.sh /
