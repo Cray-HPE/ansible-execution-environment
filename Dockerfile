@@ -59,6 +59,9 @@ RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /
 
+# Add community modules into environment using ansible community install roles
+COPY /ansible/playbooks /
+
 # Establish runtime Scripts and Entrypoints
 COPY entrypoint.sh /
 COPY entrypoint-setup.sh /

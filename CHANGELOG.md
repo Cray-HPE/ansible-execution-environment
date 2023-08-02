@@ -10,6 +10,8 @@ associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
 ## [Unreleased]
+### Added
+- Infrastructure required to do community installs of ansible modules to include SOPS
 ### Dependencies
 Bumped dependency patch versions:
 | Package                  | From    | To       |
