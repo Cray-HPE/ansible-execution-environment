@@ -9,6 +9,23 @@ This is the changelog for the configuration framework service (CFS) for its
 associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
+## [Unreleased]
+### Added
+- Infrastructure required to do community installs of ansible modules to include SOPS
+
+### Dependencies
+Bumped dependency patch versions:
+| Package                  | From    | To       |
+|--------------------------|---------|----------|
+| `ansible`                | 2.9.13  | 2.9.27   |
+| `bcrypt`                 | 3.1.6   | 3.1.7    |
+| `cffi`                   | 1.14.3  | 1.14.6   |
+| `Jinja2`                 | 2.10.1  | 2.10.3   |
+| `jmespath`               | 0.9.3   | 0.9.5    |
+| `netaddr`                | 0.7.19  | 0.7.20   |
+| `rsa`                    | 4.7     | 4.7.2    |
+| `urllib3`                | 1.25.9  | 1.25.11  |
+
 ## [1.4.4] - 2023-08-14
 ### Changed
 - CASMCMS-8691: Add CSM `noos` Zypper repository when building Docker image to account for new RPM locations
