@@ -9,6 +9,10 @@ This is the changelog for the configuration framework service (CFS) for its
 associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
+## [1.4.4] - 2023-08-14
+### Changed
+- CASMCMS-8691: Add CSM `noos` Zypper repository when building Docker image to account for new RPM locations
+
 ## [1.4.3] - 2023-07-20
 ### Dependencies
 - CASMCMS-8717: Bump `paramiko` from 2.4.2 to 2.7.2 and `cryptography` from `cryptography` from 3.2 to 41.0.2
