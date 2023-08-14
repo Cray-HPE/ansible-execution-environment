@@ -42,9 +42,11 @@ ARTIFACTORY_PASSWORD=$(test -f /run/secrets/ARTIFACTORY_READONLY_TOKEN && cat /r
 CREDS=${ARTIFACTORY_USERNAME:-}
 # Append ":<password>" to credentials variable, if a password is set
 [[ -z ${ARTIFACTORY_PASSWORD} ]] || CREDS="${CREDS}:${ARTIFACTORY_PASSWORD}"
-CSM_REPO_URI="https://${CREDS}@artifactory.algol60.net/artifactory/csm-rpms/hpe/stable/sle-15sp${SP}?auth=basic"
+CSM_SLES_REPO_URI="https://${CREDS}@artifactory.algol60.net/artifactory/csm-rpms/hpe/stable/sle-15sp${SP}?auth=basic"
+CSM_NOOS_REPO_URI="https://${CREDS}@artifactory.algol60.net/artifactory/csm-rpms/hpe/stable/noos?auth=basic"
 
-zypper --non-interactive ar --no-gpgcheck "${CSM_REPO_URI}" csm
+zypper --non-interactive ar --no-gpgcheck "${CSM_SLES_REPO_URI}" csm-sles
+zypper --non-interactive ar --no-gpgcheck "${CSM_NOOS_REPO_URI}" csm-noos
 zypper --non-interactive --gpg-auto-import-keys refresh
 zypper --non-interactive in --no-confirm python39-devel python39-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base jq
 zypper --non-interactive in -f --no-confirm csm-ssh-keys-${CSM_SSH_KEYS_VERSION}
