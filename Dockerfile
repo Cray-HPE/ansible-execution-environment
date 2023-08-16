@@ -28,6 +28,13 @@ ARG SP=3
 # Pin the version of csm-ssh-keys being installed. The actual version is substituted by
 # the runBuildPrep script at build time
 ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
+ARG SOPS_VERSION=3.1.0
+ARG SOPS_REBUILD_ID=1
+ARG SOPS_RELEASE_URL=https://github.com/getsops/sops/releases/tag/${SOPS_VERSION}
+ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}-${SOPS_REBUILD_ID}.x86_64.rpm
+ARG COMMUNITY_SOPS_VERSION=1.6.3
+ARG COMMUNITY_HASHI_VAULT_VERSION=5.0.0
+
 
 # Do zypper operations using a wrapper script, to isolate the necessary artifactory authentication
 COPY zypper-docker-build.sh /
@@ -59,8 +66,10 @@ RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /
 
-# Add community modules into environment using ansible community install roles
-RUN ansible-galaxy collection install community.sops:1.6.3
+# Add community modules and pre-install necessary binaries from the distro
+RUN curl -L --output sops.rpm ${SOPS_RPM_SOURCE} && rpm -ivh sops.rpm
+RUN ansible-galaxy collection install community.sops:${COMMUNITY_SOPS_VERSION} \
+                                      community.hash_vault:${COMMUNITY_HASHI_VAULT_VERSION}
 
 # Establish runtime Scripts and Entrypoints
 COPY entrypoint.sh /

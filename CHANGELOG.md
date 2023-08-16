@@ -11,7 +11,7 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 ### Added
-- Infrastructure required to do community installs of ansible modules to include SOPS
+- Infrastructure required to do community installs of ansible modules for SOPS
 ### Dependencies
 Bumped dependency patch versions:
 | Package                  | From    | To       |
