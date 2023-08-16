@@ -12,6 +12,10 @@ this does, see the README.md entry.
 ## [Unreleased]
 ### Added
 - Infrastructure required to do community installs of ansible modules for SOPS
+### Changed
+- Disabled concurrent Jenkins builds on same branch/commit
+- Added build timeout to avoid hung builds
+
 ### Dependencies
 Bumped dependency patch versions:
 | Package                  | From    | To       |
@@ -24,6 +28,10 @@ Bumped dependency patch versions:
 | `netaddr`                | 0.7.19  | 0.7.20   |
 | `rsa`                    | 4.7     | 4.7.2    |
 | `urllib3`                | 1.25.9  | 1.25.11  |
+
+## [1.4.4] - 2023-08-14
+### Changed
+- CASMCMS-8691: Add CSM `noos` Zypper repository when building Docker image to account for new RPM locations
 
 ## [1.4.3] - 2023-07-20
 ### Dependencies

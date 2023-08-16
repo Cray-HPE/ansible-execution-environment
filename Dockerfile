@@ -63,13 +63,13 @@ RUN mv /opt/cray/ansible/modules/*    /usr/share/ansible/plugins/modules/
 RUN mkdir -p /usr/share/ansible/plugins/ara/
 RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/ara/
 
-# Stage our default ansible variables
-COPY cray_ansible_defaults.yaml /
-
-# Add community modules and pre-install necessary binaries from the distro
+# Add community modules and pre-install necessary binaries to support them from the distro
 RUN curl -L --output sops.rpm ${SOPS_RPM_SOURCE} && rpm -ivh sops.rpm
 RUN ansible-galaxy collection install community.sops:${COMMUNITY_SOPS_VERSION} \
                                       community.hash_vault:${COMMUNITY_HASHI_VAULT_VERSION}
+
+# Stage our default ansible variables
+COPY cray_ansible_defaults.yaml /
 
 # Establish runtime Scripts and Entrypoints
 COPY entrypoint.sh /
