@@ -12,6 +12,9 @@ this does, see the README.md entry.
 ## [Unreleased]
 ### Added
 - Infrastructure required to do community installs of ansible modules to include SOPS
+### Changed
+- Disabled concurrent Jenkins builds on same branch/commit
+- Added build timeout to avoid hung builds
 
 ### Dependencies
 Bumped dependency patch versions:
