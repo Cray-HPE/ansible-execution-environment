@@ -12,9 +12,14 @@ this does, see the README.md entry.
 ## [Unreleased]
 ### Added
 - Infrastructure required to do community installs of ansible modules to include SOPS
+- Added support for DEBUG_WAIT_TIME
+- Added support for special debug playbooks
+- Added session label for ara recording
+
 ### Changed
 - Disabled concurrent Jenkins builds on same branch/commit
 - Added build timeout to avoid hung builds
+- Moved to the v3 CFS api
 
 ### Dependencies
 Bumped dependency patch versions:

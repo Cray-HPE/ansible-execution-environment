@@ -1,0 +1,7 @@
+- hosts: all
+  gather_facts: false
+  tasks:
+    - fail:
+        msg: This is an intentional test failure
+      run_once: true
+      delegate_to: localhost
