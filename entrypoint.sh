@@ -2,7 +2,7 @@
 #
 # MIT License
 #
-# (C) Copyright 2019-2022 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2019-2023 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -32,19 +32,32 @@ fi
 
 ANSIBLE_DIR=/etc/ansible
 
+export ARA_DEFAULT_LABELS=$SESSION_NAME
+export ARA_RECORD_CONTROLLER=false
+export ARA_RECORD_USER=false
+
 for layer in $(echo "${@}" | jq -c .[]); do
-    export SESSION_CLONE_URL=$(echo "${layer}" | jq -r .cloneUrl)
+    export SESSION_CLONE_URL=$(echo "${layer}" | jq -r .clone_url)
     export SESSION_PLAYBOOK=$(echo "${layer}" | jq -r .playbook)
     export LAYER_CURRENT=$(echo "${layer}" | jq -r .layer)
     LAYER_DIR=${ANSIBLE_DIR}/layer${LAYER_CURRENT}
     PLAYBOOK_PATH=${LAYER_DIR}/${SESSION_PLAYBOOK}
     export ANSIBLE_ROLES_PATH=${LAYER_DIR}/roles
 
-    echo "Running $SESSION_PLAYBOOK from repo $SESSION_CLONE_URL"
+    if [[ "$LAYER_CURRENT" == "_debug" ]]; then
+        echo "Running $SESSION_PLAYBOOK from the debug playbooks"
+    else
+        echo "Running $SESSION_PLAYBOOK from repo $SESSION_CLONE_URL"
+    fi
     ansible-playbook $PLAYBOOK_PATH $ANSIBLE_ARGS
     ANSIBLE_EXIT=$?
     if [ $ANSIBLE_EXIT -ne 0 ]; then
         echo "Playbook $SESSION_PLAYBOOK from repo $SESSION_CLONE_URL failed"
+        if [ -n "$DEBUG_WAIT_TIME" ] && [ $DEBUG_WAIT_TIME -gt 0 ]; then
+            echo "This session has failed and will remain running for $DEBUG_WAIT_TIME seconds to allow debugging"
+            echo "Touch \"/tmp/complete\" to complete the session early and cleanly"
+            timeout $DEBUG_WAIT_TIME bash -c 'until [ -f /tmp/complete ]; do sleep 1; done'
+        fi
         exit $ANSIBLE_EXIT;
     fi
 done
