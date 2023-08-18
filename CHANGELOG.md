@@ -10,6 +10,8 @@ associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
 ## [Unreleased]
+
+## [1.14.0] - 2023-08-18
 ### Added
 - Infrastructure required to do community installs of ansible modules to include SOPS
 - Added support for DEBUG_WAIT_TIME
