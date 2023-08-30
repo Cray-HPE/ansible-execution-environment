@@ -61,7 +61,7 @@ RUN mkdir -p /usr/share/ansible/plugins/ara/
 RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/ara/
 
 # Add community modules and pre-install necessary binaries to support them from the distro
-RUN curl -L --output sops.rpm $SOPS_RPM_SOURCE && rpm -ivh sops.rpm
+RUN curl -L --output sops.rpm ${SOPS_RPM_SOURCE} && rpm -ivh sops.rpm
 RUN ansible-galaxy collection install community.sops:$COMMUNITY_SOPS_VERSION
 
 # Stage our default ansible variables
