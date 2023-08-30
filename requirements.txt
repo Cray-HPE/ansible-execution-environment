@@ -1,5 +1,5 @@
 -c constraints.txt
-ansible
+ansible==2.11.12
 ara
 dnspython
 hvac
