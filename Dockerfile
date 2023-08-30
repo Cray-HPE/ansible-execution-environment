@@ -30,7 +30,7 @@ ARG SP=3
 ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
 ARG SOPS_VERSION=3.6.0
 ARG SOPS_REBUILD_ID=1
-ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}-${SOPS_REBUILD_ID}.x86_64.rpm
+ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-${SOPS_VERSION}-${SOPS_REBUILD_ID}.x86_64.rpm
 ARG COMMUNITY_SOPS_VERSION=1.6.3
 
 # Do zypper operations using a wrapper script, to isolate the necessary artifactory authentication
