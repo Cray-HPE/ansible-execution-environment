@@ -1,5 +1,5 @@
 -c constraints.txt
-ansible-core=2.11.12
+ansible-core
 ara
 dnspython
 hvac
