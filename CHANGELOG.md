@@ -10,10 +10,16 @@ associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
 ## [Unreleased]
+### Added
+- Tuneables for SOPS that support use of vars collection and hashicorp vault
+### Changed
+- Migrated to ansible-core instead of ansible package
+- Upgraded from ansible 2.9.27 to 2.11.12
+
 
 ## [1.14.0] - 2023-08-18
 ### Added
-- Infrastructure required to do community installs of ansible modules to include SOPS
+- Infrastructure required to do community installs of ansible modules for SOPS
 - Added support for DEBUG_WAIT_TIME
 - Added support for special debug playbooks
 - Added session label for ara recording
