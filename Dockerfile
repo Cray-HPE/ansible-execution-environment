@@ -67,6 +67,9 @@ RUN ansible-galaxy collection install community.sops:$COMMUNITY_SOPS_VERSION
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /
 
+# Stage our debug playbooks
+COPY debug_playbooks/* /etc/ansible/layer_debug/
+
 # Establish runtime Scripts and Entrypoints
 COPY entrypoint.sh /
 COPY entrypoint-setup.sh /
