@@ -12,6 +12,7 @@ this does, see the README.md entry.
 ## [Unreleased]
 ### Added
 - Tuneables for SOPS that support use of vars collection and hashicorp vault
+- Reintroduced the community.general package to support zypper operations
 ### Changed
 - Migrated to ansible-core instead of ansible package
 - Upgraded from ansible 2.9.27 to 2.11.12
