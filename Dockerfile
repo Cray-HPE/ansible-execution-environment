@@ -32,6 +32,7 @@ ARG SOPS_VERSION=3.6.0
 ARG SOPS_REBUILD_ID=1
 ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-${SOPS_VERSION}-${SOPS_REBUILD_ID}.x86_64.rpm
 ARG COMMUNITY_SOPS_VERSION=1.6.3
+ARG COMMUNITY_K8S_VERSION=2.4.0
 
 # Do zypper operations using a wrapper script, to isolate the necessary artifactory authentication
 COPY zypper-docker-build.sh /
@@ -63,6 +64,7 @@ RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/
 # Add community modules and pre-install necessary binaries to support them from the distro
 RUN curl -L --output sops.rpm ${SOPS_RPM_SOURCE} && rpm -ivh sops.rpm
 RUN ansible-galaxy collection install community.sops:$COMMUNITY_SOPS_VERSION
+RUN ansible-galaxy collection install kubernetes.core:$COMMUNITY_K8S_VERSION
 
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /
