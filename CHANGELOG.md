@@ -14,6 +14,8 @@ this does, see the README.md entry.
 - Tuneables for SOPS that support use of vars collection and hashicorp vault
 - Reintroduced the community.general package to support zypper operations
 - Adds community.hashivault
+- Adds kubernetes community modules
+- Added a number of missing, common, or likely to be used modules in the shasta ecosystem.
 ### Changed
 - Migrated to ansible-core instead of ansible package
 - Upgraded from ansible 2.9.27 to 2.11.12
