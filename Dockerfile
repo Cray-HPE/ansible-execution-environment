@@ -66,6 +66,7 @@ RUN curl -L --output sops.rpm ${SOPS_RPM_SOURCE} && rpm -ivh sops.rpm
 RUN ansible-galaxy collection install community.sops:$COMMUNITY_SOPS_VERSION
 RUN ansible-galaxy collection install kubernetes.core:$COMMUNITY_K8S_VERSION
 RUN ansible-galaxy collection install community.general
+RUN ansible-galaxy collection install community.hashi_vault
 
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /
