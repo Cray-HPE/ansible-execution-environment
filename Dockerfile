@@ -62,7 +62,15 @@ RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/
 
 # Add community modules and pre-install necessary binaries to support them from the distro
 RUN curl -L --output sops.rpm ${SOPS_RPM_SOURCE} && rpm -ivh sops.rpm
-RUN ansible-galaxy collection install community.sops:$COMMUNITY_SOPS_VERSION
+RUN ansible-galaxy collection install community.sops:$COMMUNITY_SOPS_VERSION && \
+    ansible-galaxy collection install community.general && \
+    ansible-galaxy collection install community.hashi_vault:5.0.0 && \
+    ansible-galaxy collection install kubernetes.core && \
+    ansible-galaxy collection install ansible.posix && \
+    ansible-galaxy collection install ansible.utils && \
+    ansible-galaxy collection install community.crypto && \
+    ansible-galaxy collection install containers.podman && \
+    ansible-galaxy collection install community.libvirt
 
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /
