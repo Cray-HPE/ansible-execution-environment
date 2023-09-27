@@ -9,7 +9,9 @@ This is the changelog for the configuration framework service (CFS) for its
 associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
-## [Unreleased]
+## Unreleased
+
+## [1.15.1] - 2023-09-27
 ### Added
 - Tuneables for SOPS that support use of vars collection and hashicorp vault
 - Reintroduced the community.general package to support zypper operations
