@@ -28,6 +28,10 @@ ARG SP=3
 # Pin the version of csm-ssh-keys being installed. The actual version is substituted by
 # the runBuildPrep script at build time
 ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
+ARG SOPS_VERSION=3.6.0
+ARG SOPS_REBUILD_ID=1
+ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-${SOPS_VERSION}-${SOPS_REBUILD_ID}.x86_64.rpm
+ARG COMMUNITY_SOPS_VERSION=1.6.3
 
 # Do zypper operations using a wrapper script, to isolate the necessary artifactory authentication
 COPY zypper-docker-build.sh /
@@ -55,6 +59,18 @@ RUN mv /opt/cray/ansible/modules/*    /usr/share/ansible/plugins/modules/
 # Stage ARA plugins
 RUN mkdir -p /usr/share/ansible/plugins/ara/
 RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/ara/
+
+# Add community modules and pre-install necessary binaries to support them from the distro
+RUN curl -L --output sops.rpm ${SOPS_RPM_SOURCE} && rpm -ivh sops.rpm
+RUN ansible-galaxy collection install community.sops:$COMMUNITY_SOPS_VERSION && \
+    ansible-galaxy collection install community.general && \
+    ansible-galaxy collection install community.hashi_vault:5.0.0 && \
+    ansible-galaxy collection install kubernetes.core && \
+    ansible-galaxy collection install ansible.posix && \
+    ansible-galaxy collection install ansible.utils && \
+    ansible-galaxy collection install community.crypto && \
+    ansible-galaxy collection install containers.podman && \
+    ansible-galaxy collection install community.libvirt
 
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /
