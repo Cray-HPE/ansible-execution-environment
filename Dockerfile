@@ -70,7 +70,8 @@ RUN ansible-galaxy collection install community.sops:$COMMUNITY_SOPS_VERSION && 
     ansible-galaxy collection install ansible.utils && \
     ansible-galaxy collection install community.crypto && \
     ansible-galaxy collection install containers.podman && \
-    ansible-galaxy collection install community.libvirt
+    ansible-galaxy collection install community.libvirt && \
+    ansible-galaxy collection install ansible.netcommon
 
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /
