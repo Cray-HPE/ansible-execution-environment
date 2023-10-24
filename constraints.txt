@@ -1,3 +1,5 @@
+# CASMTRIAGE-6198: Once ansible-core >= 2.13.9 remove
+# https://old-galaxy.ansible.com/ from ansible.cfg
 ansible-core==2.11.12
 ara==1.5.8
 asn1crypto==0.24.0
