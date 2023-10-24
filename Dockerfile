@@ -47,7 +47,7 @@ RUN pip3 install --no-cache-dir -U pip wheel && \
     pip3 install --no-cache-dir -r requirements.txt && \
     find . -iname '/opt/cray/ansible/requirements/*.txt' -exec  pip3 install --no-cache-dir -r "{}" \;
 
-# Stage our runtime configuration
+# Stage our buildtime configuration
 COPY ansible.cfg /etc/ansible/
 
 # Stage our custom plugins
@@ -70,7 +70,8 @@ RUN ansible-galaxy collection install community.sops:$COMMUNITY_SOPS_VERSION && 
     ansible-galaxy collection install ansible.utils && \
     ansible-galaxy collection install community.crypto && \
     ansible-galaxy collection install containers.podman && \
-    ansible-galaxy collection install community.libvirt
+    ansible-galaxy collection install community.libvirt && \
+    ansible-galaxy collection install ansible.netcommon
 
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /

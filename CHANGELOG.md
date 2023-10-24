@@ -11,6 +11,11 @@ this does, see the README.md entry.
 
 ## Unreleased
 
+## [1.15.2] - 2023-10-24
+### Added
+- Added ansible.netcommon module for UAN use
+
+
 ## [1.15.1] - 2023-09-27
 ### Added
 - Tuneables for SOPS that support use of vars collection and hashicorp vault
