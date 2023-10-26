@@ -11,10 +11,13 @@ this does, see the README.md entry.
 
 ## Unreleased
 
+## [1.15.3] - 2023-10-26
+### Added
+- aws_s3 ansible galaxy collection for s3 projection
+
 ## [1.15.2] - 2023-10-24
 ### Added
 - Added ansible.netcommon module for UAN use
-
 
 ## [1.15.1] - 2023-09-27
 ### Added
