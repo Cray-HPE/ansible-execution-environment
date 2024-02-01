@@ -80,3 +80,7 @@ do
   sleep 3
 done
 echo Sidecar available
+
+echo "Pausing for ims ssh servers to come up..."
+sleep 60
+echo "Proceeding"
