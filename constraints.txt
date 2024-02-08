@@ -11,10 +11,11 @@ hvac==0.9.6
 idna==2.8
 Jinja2==2.10.3
 jmespath==0.9.5
-kubernetes==11.0.0
+# CSM 1.6 uses Kubernetes 1.22, so use client v22.x to ensure compatability
+kubernetes==22.6.0
 MarkupSafe==1.1.1
 netaddr==0.7.20
-openshift==0.11.2
+openshift==0.13.2
 paramiko==2.7.2
 pexpect==4.6.0
 ptyprocess==0.6.0
