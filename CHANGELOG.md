@@ -11,6 +11,10 @@ this does, see the README.md entry.
 
 ## Unreleased
 
+### Dependencies
+- Bumped `kubernetes` from 11.0.0 to 22.6.0 to match CSM 1.6 Kubernetes version
+- Bumping `kubernetes` necessitated bumping `openshift` from 0.11.2 to 0.13.2
+
 ## [1.15.3] - 2023-10-26
 ### Added
 - aws_s3 ansible galaxy collection for s3 projection
