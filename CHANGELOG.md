@@ -11,6 +11,10 @@ this does, see the README.md entry.
 
 ## Unreleased
 
+## [1.16.1] - 2024-02-22
+### Dependencies
+- Bumped `csm-ssh-keys` from 1.5 to 1.6 for CSM 1.6
+
 ## [1.16.0] - 2024-02-22
 ### Dependencies
 - Bumped `kubernetes` from 11.0.0 to 22.6.0 to match CSM 1.6 Kubernetes version
