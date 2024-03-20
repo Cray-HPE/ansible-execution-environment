@@ -11,6 +11,10 @@ this does, see the README.md entry.
 
 ## Unreleased
 
+## [1.16.2] - 2024-03-20
+### Fixed
+- Fixed loading kubernetes configuration data in the shasta_s3_creds module
+
 ## [1.16.1] - 2024-02-22
 ### Dependencies
 - Bumped `csm-ssh-keys` from 1.5 to 1.6 for CSM 1.6
