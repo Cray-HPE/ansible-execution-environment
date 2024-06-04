@@ -9,7 +9,9 @@ This is the changelog for the configuration framework service (CFS) for its
 associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
-## Unreleased
+## [Unreleased]
+### Dependencies
+- Bumped `paramiko` from 2.7.2 to 2.11.1 to prevent Blowfish deprecation warnings.
 
 ## [1.16.2] - 2024-03-20
 ### Fixed
