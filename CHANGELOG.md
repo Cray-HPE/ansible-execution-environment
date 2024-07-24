@@ -9,7 +9,11 @@ This is the changelog for the configuration framework service (CFS) for its
 associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
-## Unreleased
+## [Unreleased]
+
+## [1.16.3] - 2024-07-24
+### Dependencies
+- Bump `certifi` from 2019.11.28 to 2023.7.22 to resolve CVE
 
 ## [1.16.2] - 2024-03-20
 ### Fixed
