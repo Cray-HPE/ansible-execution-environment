@@ -11,6 +11,10 @@ this does, see the README.md entry.
 
 ## Unreleased
 
+## [1.16.3] - 2024-04-17
+### Added
+- Automatically fetch and set vault token before ansible executes
+
 ## [1.16.2] - 2024-03-20
 ### Fixed
 - Fixed loading kubernetes configuration data in the shasta_s3_creds module
