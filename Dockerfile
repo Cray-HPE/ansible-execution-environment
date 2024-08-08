@@ -24,7 +24,7 @@
 FROM artifactory.algol60.net/registry.suse.com/suse/sle15:15.3 as base
 
 # Set the SLES SP number
-ARG SP=3
+ARG SP=6
 # Pin the version of csm-ssh-keys being installed. The actual version is substituted by
 # the runBuildPrep script at build time
 ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
