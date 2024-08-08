@@ -1,7 +1,7 @@
 #
 # MIT License
 #
-# (C) Copyright 2019-2023 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2019-2024 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -24,14 +24,14 @@
 FROM artifactory.algol60.net/registry.suse.com/suse/sle15:15.3 as base
 
 # Set the SLES SP number
-ARG SP=3
+ARG SP=6
 # Pin the version of csm-ssh-keys being installed. The actual version is substituted by
 # the runBuildPrep script at build time
 ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
-ARG SOPS_VERSION=3.6.0
+ARG SOPS_VERSION=3.6.1
 ARG SOPS_REBUILD_ID=1
 ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-${SOPS_VERSION}-${SOPS_REBUILD_ID}.x86_64.rpm
-ARG COMMUNITY_SOPS_VERSION=1.6.3
+ARG COMMUNITY_SOPS_VERSION=1.6.6
 
 # Do zypper operations using a wrapper script, to isolate the necessary artifactory authentication
 COPY zypper-docker-build.sh /
