@@ -14,6 +14,7 @@ this does, see the README.md entry.
 ### Dependencies
 - Bump SOPS version from 3.6.0 to 3.6.1.
 - Bump Community SOPS version from 1.6.3 to 1.6.6.
+- Build Docker image on SLES15 SP6 (up from SP3)
 
 ## [1.16.3] - 2024-07-24
 ### Dependencies
