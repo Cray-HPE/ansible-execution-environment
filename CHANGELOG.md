@@ -11,6 +11,9 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+### Changed
+- List Python packages after installing, for build log purposes
+
 ### Dependencies
 - Bump SOPS version from 3.6.0 to 3.6.1.
 - Bump Community SOPS version from 1.6.3 to 1.6.6.

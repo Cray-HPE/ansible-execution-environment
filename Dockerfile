@@ -45,7 +45,9 @@ COPY requirements.txt constraints.txt /
 ENV LANG=C.utf8
 RUN pip3 install --no-cache-dir -U pip wheel && \
     pip3 install --no-cache-dir -r requirements.txt && \
-    find . -iname '/opt/cray/ansible/requirements/*.txt' -exec  pip3 install --no-cache-dir -r "{}" \;
+    pip3 list --format freeze && \
+    find . -iname '/opt/cray/ansible/requirements/*.txt' -exec  pip3 install --no-cache-dir -c constraints.txt -r "{}" \; && \
+    pip3 list --format freeze
 
 # Stage our buildtime configuration
 COPY ansible.cfg /etc/ansible/
