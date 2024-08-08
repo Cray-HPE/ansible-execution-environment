@@ -11,6 +11,10 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+### Dependencies
+- Bump SOPS version from 3.6.0 to 3.6.1.
+- Bump Community SOPS version from 1.6.3 to 1.6.6.
+
 ## [1.16.3] - 2024-07-24
 ### Dependencies
 - Bump `certifi` from 2019.11.28 to 2023.7.22 to resolve CVE
