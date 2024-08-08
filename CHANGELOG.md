@@ -11,6 +11,8 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+## [1.16.4] - 2024-08-08
+
 ### Changed
 - List Python packages after installing, for build log purposes
 
