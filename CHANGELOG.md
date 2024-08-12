@@ -11,7 +11,7 @@ this does, see the README.md entry.
 
 ## Unreleased
 
-## [1.16.3] - 2024-04-17
+## [1.16.3] - 2024-08-12
 ### Added
 - Automatically fetch and set vault token before ansible executes
 
