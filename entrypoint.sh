@@ -38,7 +38,7 @@ export ARA_RECORD_USER=false
 export VAULT_ENDPOINT=http://cray-vault.vault:8200/v1/auth/kubernetes/login
 export KUBERNETES_JWT=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 export ROLE=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
-export VAULT_TOKEN=$(curl -d '{"jwt": "'"${KUBERNETES_JWT}"'", "role": "'"${ROLE}"'"}' -X POST $VAULT_ENDPOINT | jq '.auth.client_token')
+export VAULT_TOKEN=$(curl -d '{"jwt": "'"${KUBERNETES_JWT}"'", "role": "'"${ROLE}"'"}' -X POST $VAULT_ENDPOINT | jq '.auth.client_token' | sed -e 's/"//g')
 
 for layer in $(echo "${@}" | jq -c .[]); do
     export SESSION_CLONE_URL=$(echo "${layer}" | jq -r .clone_url)
