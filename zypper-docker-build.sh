@@ -48,7 +48,7 @@ CSM_NOOS_REPO_URI="https://${CREDS}@artifactory.algol60.net/artifactory/csm-rpms
 zypper --non-interactive ar --no-gpgcheck "${CSM_SLES_REPO_URI}" csm-sles
 zypper --non-interactive ar --no-gpgcheck "${CSM_NOOS_REPO_URI}" csm-noos
 zypper --non-interactive --gpg-auto-import-keys refresh
-zypper --non-interactive in --no-confirm python39-devel python39-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base jq
+zypper --non-interactive in --no-confirm python311-devel python311-pip gcc libopenssl-devel openssh curl less catatonit rsync glibc-locale-base jq
 zypper --non-interactive in -f --no-confirm csm-ssh-keys-${CSM_SSH_KEYS_VERSION}
 # Lock the version of csm-ssh-keys, just to be certain it is not upgraded inadvertently somehow later
 zypper --non-interactive al csm-ssh-keys
@@ -58,9 +58,7 @@ zypper --non-interactive al csm-ssh-keys
 zypper --non-interactive rr --all
 rm -f /etc/zypp/repos.d/*
 # Manually set the links that SLES neglects to do for us
-update-alternatives --install /usr/bin/easy_install easy_install /usr/bin/easy_install-3.9 99
-update-alternatives --install /usr/bin/pip pip /usr/bin/pip3.9 99
-update-alternatives --install /usr/bin/pip3 pip3 /usr/bin/pip3.9 99
-update-alternatives --install /usr/bin/pydoc3 pydoc3 /usr/bin/pydoc3.9 99
-update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 99
-update-alternatives --install /usr/bin/python3-config python3-config /usr/bin/python3.9-config 99
+update-alternatives --install /usr/bin/pip pip /usr/bin/pip3.11 99
+update-alternatives --install /usr/bin/pip3 pip3 /usr/bin/pip3.11 99
+update-alternatives --install /usr/bin/pydoc3 pydoc3 /usr/bin/pydoc3.11 99
+update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 99
