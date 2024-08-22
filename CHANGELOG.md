@@ -11,6 +11,8 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+## [1.17.0] - 2024-08-22
+
 ### Dependencies
 - Move Docker image to SLES15 SP6
 - Move to Python 3.11 inside Docker image
