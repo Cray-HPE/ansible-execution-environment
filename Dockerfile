@@ -21,10 +21,10 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
-FROM artifactory.algol60.net/registry.suse.com/suse/sle15:15.3 AS base
+FROM artifactory.algol60.net/registry.suse.com/suse/sle15:15.6 AS base
 
 # Set the SLES SP number
-ARG SP=3
+ARG SP=6
 # Pin the version of csm-ssh-keys being installed. The actual version is substituted by
 # the runBuildPrep script at build time
 ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
@@ -43,11 +43,14 @@ RUN --mount=type=secret,id=ARTIFACTORY_READONLY_USER --mount=type=secret,id=ARTI
 
 COPY requirements.txt constraints.txt /
 ENV LANG=C.utf8
-RUN pip3 install --no-cache-dir -U pip wheel && \
-    pip3 install --no-cache-dir -r requirements.txt && \
-    pip3 list --format freeze && \
-    find . -iname '/opt/cray/ansible/requirements/*.txt' -exec  pip3 install --no-cache-dir -c constraints.txt -r "{}" \; && \
-    pip3 list --format freeze
+RUN --mount=type=secret,id=netrc,target=/root/.netrc \
+    python3 --version && \
+    python3 -m pip install --no-cache-dir -U pip wheel && \
+    python3 -m pip install --no-cache-dir -r requirements.txt && \
+    python3 -m pip list --format freeze && \
+    find . -iname '/opt/cray/ansible/requirements/*.txt' -print -exec \
+        python3 -m pip install --no-cache-dir -c constraints.txt -r "{}" \; && \
+    python3 -m pip list --format freeze
 
 # Stage our buildtime configuration
 COPY ansible.cfg /etc/ansible/
