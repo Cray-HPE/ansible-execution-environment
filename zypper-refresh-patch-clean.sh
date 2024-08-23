@@ -2,7 +2,7 @@
 #
 # MIT License
 #
-# (C) Copyright 2021-2022 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2021-2022, 2024 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -64,7 +64,7 @@ while [ $count -lt 10 ]; do
     # fail because of Snyk vulnerabilities until I added that argument. I suspect
     # there is lag time between when Snyk knows about a vulnerability and when
     # zypper considers the update to be a security patch.
-    zypper --non-interactive patch --with-update
+    zypper --non-interactive patch --with-update --skip-not-applicable-patches
     rc=$?
 
     # If rc = 0, break out of the while loop

@@ -11,6 +11,11 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+## [1.17.1] - 2024-08-23
+
+### Changed
+- Add code to avoid curl versions due to a [known bug with that version](https://github.com/curl/curl/issues/13229)
+
 ## [1.17.0] - 2024-08-22
 
 ### Dependencies

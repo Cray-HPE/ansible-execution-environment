@@ -23,14 +23,16 @@
 #
 FROM artifactory.algol60.net/registry.suse.com/suse/sle15:15.6 AS base
 
-# Set the SLES SP number
+# Set the SLES SP number and hardware architecture
 ARG SP=6
+ARG ARCH=x86_64
+
 # Pin the version of csm-ssh-keys being installed. The actual version is substituted by
 # the runBuildPrep script at build time
 ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
 ARG SOPS_VERSION=3.6.1
 ARG SOPS_REBUILD_ID=1
-ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-${SOPS_VERSION}-${SOPS_REBUILD_ID}.x86_64.rpm
+ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-${SOPS_VERSION}-${SOPS_REBUILD_ID}.${ARCH}.rpm
 ARG COMMUNITY_SOPS_VERSION=1.6.6
 
 # Do zypper operations using a wrapper script, to isolate the necessary artifactory authentication
