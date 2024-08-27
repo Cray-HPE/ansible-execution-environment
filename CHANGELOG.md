@@ -11,6 +11,9 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+### Dependencies
+- CSM 1.6 moved to Kubernetes 1.24, so use client v24.x to ensure compatability
+
 ## [1.17.1] - 2024-08-23
 
 ### Changed
