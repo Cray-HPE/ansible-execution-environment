@@ -40,6 +40,10 @@ this does, see the README.md entry.
 ### Dependencies
 - Bump `certifi` from 2019.11.28 to 2023.7.22 to resolve CVE
 
+## [1.16.3] - 2024-08-12
+### Added
+- Automatically fetch and set vault token before ansible executes
+
 ## [1.16.2] - 2024-03-20
 ### Fixed
 - Fixed loading kubernetes configuration data in the shasta_s3_creds module
