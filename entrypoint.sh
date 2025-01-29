@@ -2,7 +2,7 @@
 #
 # MIT License
 #
-# (C) Copyright 2019-2023 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2019-2025 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -35,10 +35,6 @@ ANSIBLE_DIR=/etc/ansible
 export ARA_DEFAULT_LABELS=$SESSION_NAME
 export ARA_RECORD_CONTROLLER=false
 export ARA_RECORD_USER=false
-export VAULT_ENDPOINT=http://cray-vault.vault:8200/v1/auth/kubernetes/login
-export KUBERNETES_JWT=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
-export ROLE=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
-export VAULT_TOKEN=$(curl -d '{"jwt": "'"${KUBERNETES_JWT}"'", "role": "'"${ROLE}"'"}' -X POST $VAULT_ENDPOINT | jq '.auth.client_token' | sed -e 's/"//g')
 
 for layer in $(echo "${@}" | jq -c .[]); do
     export SESSION_CLONE_URL=$(echo "${layer}" | jq -r .clone_url)
