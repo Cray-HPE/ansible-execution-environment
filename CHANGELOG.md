@@ -10,10 +10,15 @@ associated Anisble Execution Environment (AEE). For more information about what
 this does, see the README.md entry.
 
 ## [Unreleased]
+
+## [1.18.0] - 2025-02-18
+
 ### Removed
 - Deprecated Vault login token acquisition steps from init script
+
 ### Dependencies
 - CSM 1.6 moved to Kubernetes 1.24, so use client v24.x to ensure compatability
+- CASMCMS-9282: Use `csm-ssh-keys` v1.7 for CSM 1.7
 
 ## [1.17.1] - 2024-08-23
 
