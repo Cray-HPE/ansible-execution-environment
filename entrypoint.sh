@@ -62,4 +62,7 @@ for layer in $(echo "${@}" | jq -c .[]); do
     fi
 done
 
+# Signal to inventory container that it can exit
+touch /inventory/ansible-complete
+
 echo "All playbooks completed successfully"
