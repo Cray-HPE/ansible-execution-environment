@@ -11,6 +11,8 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+## [1.19.0] - 2025-06-25
+
 ### Dependencies
 - CASMCMS-9459: update python modules
 - Bumped dependency patch versions:
