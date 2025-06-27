@@ -11,10 +11,12 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+### Dependencies
+- Bump `kubernetes` module version to match CSM 1.7 Kubernetes version
+
 ## [1.20.0] - 2025-06-27
 ### Dependencies
 - CASMCMS-9466: Reverting back python module updates made in tag `1.19.0` to resolve ansible-core dependency issues with target.
-
 
 ## [1.19.0] - 2025-06-25
 
