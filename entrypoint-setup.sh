@@ -27,7 +27,7 @@
 set -e
 
 export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
-update-ca-certificates --fresh 2>/dev/null
+update-ca-certificates --fresh -v
 
 # Add Cray defaults to group_vars/all
 CRAY_DEFAULTS_FILE=/cray_ansible_defaults.yaml
