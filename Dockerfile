@@ -82,6 +82,7 @@ RUN ansible-galaxy collection install  \
         community.sops:$COMMUNITY_SOPS_VERSION \
         kubernetes.core
 
+RUN /usr/sbin/update-ca-certificates
 
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /
