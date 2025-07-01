@@ -40,7 +40,7 @@ CRAY_CA_CERT=/etc/cray/ca/certificate_authority.crt
 if [ -v SSL_CAINFO ] && [ -f "${SSL_CAINFO}" ]; then
     CERTLINK=$(mktemp -p /etc/pki/trust/anchors)
     ln -sfv "${SSL_CAINFO}" "${CERTLINK}"
-    update_ca_certificates -v
+    update-ca-certificates -v
 fi
 
 # Copy the immutable content mounted in the inventory directory into the ansible
