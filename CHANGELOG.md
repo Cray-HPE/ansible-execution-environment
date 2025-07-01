@@ -11,6 +11,8 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+## [1.21.0] - 2025-07-01
+
 ### Added
 - CASMCMS-9474: Import CA certs during entrypoint setup, if provided
 
