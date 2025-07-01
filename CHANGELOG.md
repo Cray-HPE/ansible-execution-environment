@@ -11,6 +11,9 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+### Added
+- CASMCMS-9474: Import CA certs during entrypoint setup, if provided
+
 ### Dependencies
 - Bump `kubernetes` module version to match CSM 1.7 Kubernetes version
 
