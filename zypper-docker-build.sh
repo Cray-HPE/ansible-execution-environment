@@ -134,7 +134,7 @@ done
 run_cmd_retry zypper --non-interactive ar --no-gpgcheck "${CSM_SLES_REPO_URI}" csm-sles
 run_cmd_retry zypper --non-interactive ar --no-gpgcheck "${CSM_NOOS_REPO_URI}" csm-noos
 run_cmd_retry zypper --non-interactive --gpg-auto-import-keys refresh
-run_cmd_retry zypper --non-interactive in --no-confirm python311-devel python311-pip gcc libopenssl-devel openssh less catatonit rsync glibc-locale-base jq
+run_cmd_retry zypper --non-interactive in --no-confirm python311-devel python311-pip gcc libopenssl-devel openssh less catatonit rsync glibc-locale-base jq ca-certificates
 run_cmd_retry zypper --non-interactive in -f --no-confirm csm-ssh-keys-${CSM_SSH_KEYS_VERSION}
 # Lock the version of csm-ssh-keys, just to be certain it is not upgraded inadvertently somehow later
 run_cmd_retry zypper --non-interactive al csm-ssh-keys
