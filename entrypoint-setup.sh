@@ -38,7 +38,7 @@ CRAY_CA_CERT=/etc/cray/ca/certificate_authority.crt
 
 # Update certs if SSL_CAINFO is set
 if [ -v SSL_CAINFO ] && [ -f "${SSL_CAINFO}" ]; then
-    CERTLINK=$(mktemp /etc/pki/trust/anchors)
+    CERTLINK=$(mktemp -p /etc/pki/trust/anchors)
     ln -sfv "${SSL_CAINFO}" "${CERTLINK}"
     update_ca_certificates -v
 fi
