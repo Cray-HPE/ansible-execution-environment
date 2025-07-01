@@ -34,7 +34,14 @@ GROUPVARS_DIR=${INVENTORY_DIR}/group_vars
 GROUPVARS_FILE=${GROUPVARS_DIR}/all
 CRAY_GROUPVARS_FILE=${GROUPVARS_FILE}/cray_cfs_environment.yaml
 INVENTORY_COMPLETE_FILE=/inventory/complete
+CRAY_CA_CERT=/etc/cray/ca/certificate_authority.crt
 
+# Update certs if SSL_CAINFO is set
+if [ -v SSL_CAINFO ] && [ -f "${SSL_CAINFO}" ]; then
+    CERTLINK=$(mktemp /etc/pki/trust/anchors)
+    ln -sfv "${SSL_CAINFO}" "${CERTLINK}"
+    update_ca_certificates -v
+fi
 
 # Copy the immutable content mounted in the inventory directory into the ansible
 # inventory directory. This can be a no-op (there isn't any custom config content

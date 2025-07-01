@@ -36,9 +36,6 @@ export ARA_DEFAULT_LABELS=$SESSION_NAME
 export ARA_RECORD_CONTROLLER=false
 export ARA_RECORD_USER=false
 
-export REQUESTS_CA_BUNDLE=/etc/cray/ca/certificate_authority.crt
-cat "${REQUESTS_CA_BUNDLE}"
-
 for layer in $(echo "${@}" | jq -c .[]); do
     export SESSION_CLONE_URL=$(echo "${layer}" | jq -r .clone_url)
     export SESSION_PLAYBOOK=$(echo "${layer}" | jq -r .playbook)
