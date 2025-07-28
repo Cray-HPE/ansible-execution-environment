@@ -14,7 +14,8 @@ Jinja2
 jmespath>=0.9.5,<0.10
 # CSM 1.7 moved to Kubernetes 1.32, so use client v32.x to ensure compatability
 kubernetes>=32.0,<32.1
-MarkupSafe>=1.1.1,<1.2
+MarkupSafe
+#>=1.1.1,<1.2
 netaddr>=0.7.20,<0.8
 openshift>=0.13.2,<0.14
 paramiko>=2.7.2,<2.8
