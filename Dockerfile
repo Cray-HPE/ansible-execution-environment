@@ -30,7 +30,7 @@ ARG ARCH=x86_64
 # Pin the version of csm-ssh-keys being installed. The actual version is substituted by
 # the runBuildPrep script at build time
 ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
-ARG SOPS_VERSION=3.6.1
+ARG SOPS_VERSION=3.7.3
 ARG SOPS_REBUILD_ID=1
 ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-${SOPS_VERSION}-${SOPS_REBUILD_ID}.${ARCH}.rpm
 ARG COMMUNITY_SOPS_VERSION=1.6.6
