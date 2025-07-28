@@ -33,7 +33,7 @@ ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
 ARG SOPS_VERSION=3.10.2
 ARG SOPS_REBUILD_ID=1
 ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-${SOPS_VERSION}-${SOPS_REBUILD_ID}.${ARCH}.rpm
-ARG COMMUNITY_SOPS_VERSION=1.9.1
+ARG COMMUNITY_SOPS_VERSION=2.0.5
 
 # Do zypper operations using a wrapper script, to isolate the necessary artifactory authentication
 COPY zypper-docker-build.sh /
