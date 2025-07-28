@@ -71,8 +71,8 @@ RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/
 
 # Add community modules and pre-install necessary binaries to support them from the distro
 RUN curl -L --output sops.rpm ${SOPS_RPM_SOURCE} && rpm -ivh sops.rpm
-RUN ansible-galaxy search -vvv community.sops
-RUN ansible-galaxy collection install -vvv \
+RUN ansible-galaxy collection install --no-cache --clear-response-cache -vvv community.sops:$COMMUNITY_SOPS_VERSION
+RUN ansible-galaxy collection install --no-cache -vvv \
         amazon.aws:${AMAZON_AWS_VERSION} \
         ansible.netcommon \
         ansible.posix \
