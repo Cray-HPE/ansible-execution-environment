@@ -71,19 +71,18 @@ RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/
 
 # Add community modules and pre-install necessary binaries to support them from the distro
 RUN curl -L --output sops.rpm ${SOPS_RPM_SOURCE} && rpm -ivh sops.rpm
-RUN ansible-galaxy collection install --no-cache --clear-response-cache -vvv community.sops:$COMMUNITY_SOPS_VERSION
-RUN ansible-galaxy collection install --no-cache -vvv \
+RUN ansible-galaxy collection install -vvv \
         amazon.aws:${AMAZON_AWS_VERSION} \
-        ansible.netcommon \
-        ansible.posix \
-        ansible.utils \
-        containers.podman \
-        community.crypto \
-        community.general \
+        ansible.netcommon:5.3.0 \
+        ansible.posix:1.5.4 \
+        ansible.utils:2.12.0 \
+        containers.podman:1.10.4 \
+        community.crypto:2.15.1 \
+        community.general:7.5.9 \
         community.hashi_vault:${COMMUNITY_VAULT_VERSION} \
-        community.libvirt \
+        community.libvirt:1.4.0 \
         community.sops:$COMMUNITY_SOPS_VERSION \
-        kubernetes.core
+        kubernetes.core:3.3.1
 
 
 # Stage our default ansible variables
