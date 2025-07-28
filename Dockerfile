@@ -34,6 +34,8 @@ ARG SOPS_VERSION=3.10.2
 ARG SOPS_REBUILD_ID=1
 ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-${SOPS_VERSION}-${SOPS_REBUILD_ID}.${ARCH}.rpm
 ARG COMMUNITY_SOPS_VERSION=2.0.5
+ARG COMMUNITY_VAULT_VERSION=3.4.0
+ARG AMAZON_AWS_VERSION=5.5.4
 
 # Do zypper operations using a wrapper script, to isolate the necessary artifactory authentication
 COPY zypper-docker-build.sh /
@@ -70,14 +72,14 @@ RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/
 # Add community modules and pre-install necessary binaries to support them from the distro
 RUN curl -L --output sops.rpm ${SOPS_RPM_SOURCE} && rpm -ivh sops.rpm
 RUN ansible-galaxy collection install  \
-        amazon.aws:5.2.0 \
+        amazon.aws:${AMAZON_AWS_VERSION} \
         ansible.netcommon \
         ansible.posix \
         ansible.utils \
         containers.podman \
         community.crypto \
         community.general \
-        community.hashi_vault:3.0.0 \
+        community.hashi_vault:${COMMUNITY_VAULT_VERSION} \
         community.libvirt \
         community.sops:$COMMUNITY_SOPS_VERSION \
         kubernetes.core

@@ -9,7 +9,8 @@ cryptography>=41.0.2,<41.1
 dnspython>=2.0,<2.1
 hvac>=0.9.6,<0.10
 idna>=2.8,<2.9
-Jinja2>=2.10.3,<2.11
+Jinja2
+#>=2.10.3,<2.11
 jmespath>=0.9.5,<0.10
 # CSM 1.7 moved to Kubernetes 1.32, so use client v32.x to ensure compatability
 kubernetes>=32.0,<32.1
