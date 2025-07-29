@@ -140,6 +140,7 @@ function zypper_src_in
 }
 
 PKG_DIR="/usr/src/packages"
+RPM_DIR="${PKG_DIR}/RPMS"
 
 function get_rpms
 {
@@ -168,9 +169,9 @@ zypper_src_in nghttp3
 build_rpm nghttp3
 
 TMPREPO=$(mktemp -d)
-mkdir -pv ${PKG_DIR}/noarch ${PKG_DIR}/${ARCH}
-mv -v ${PKG_DIR}/noarch ${PKG_DIR}/${ARCH} ${TMPREPO}
-mkdir -pv ${PKG_DIR}/noarch ${PKG_DIR}/${ARCH}
+mkdir -pv ${RPM_DIR}/noarch ${RPM_DIR}/${ARCH}
+mv -v ${RPM_DIR}/noarch ${RPM_DIR}/${ARCH} ${TMPREPO}
+mkdir -pv ${RPM_DIR}/noarch ${RPM_DIR}/${ARCH}
 createrepo_c ${TMPREPO}
 run_cmd_retry zypper --non-interactive ar --refresh --no-gpgcheck ${TMPREPO} built-rpms
 zypper_in libnghttp3 nghttp3-devel
@@ -184,9 +185,9 @@ run_cmd_retry zypper --non-interactive rr tumbleweed-src-oss
 
 build_rpm curl
 TMPREPO=$(mktemp -d)
-mkdir -pv ${PKG_DIR}/noarch ${PKG_DIR}/${ARCH}
-mv -v ${PKG_DIR}/noarch ${PKG_DIR}/${ARCH} ${TMPREPO}
-mkdir -pv ${PKG_DIR}/noarch ${PKG_DIR}/${ARCH}
+mkdir -pv ${RPM_DIR}/noarch ${RPM_DIR}/${ARCH}
+mv -v ${RPM_DIR}/noarch ${RPM_DIR}/${ARCH} ${TMPREPO}
+mkdir -pv ${RPM_DIR}/noarch ${RPM_DIR}/${ARCH}
 createrepo_c ${TMPREPO}
 run_cmd_retry zypper --non-interactive ar --refresh --no-gpgcheck ${TMPREPO} built-rpms
 # Update all RPMs that we just built
