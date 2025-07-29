@@ -100,36 +100,10 @@ for MODULE in Basesystem Certifications Containers Development-Tools Python3; do
     add_zypper_repos "Module-${MODULE}"
 done
 
-#############################################################################
-# curl bug workaround
-#############################################################################
-
-# There is a bug in curl that breaks some operations
-# https://github.com/curl/curl/issues/13229
-# We know that it is not yet present in curl v8.5 and is fixed in v8.8.
-# The current SP6 repos don't have a version without this problem. So we add
-# an SP5 repo to pull in a good version of it
-S=5
-while [[ $S -lt $SP ]]; do
-    add_zypper_repos Module-Basesystem "$S"
-    let S+=1
-done
-run_cmd_retry zypper --non-interactive --gpg-auto-import-keys refresh
-
-# First try to install a newer version and then, failing that, an older one
-zypper --non-interactive in --force-resolution --no-confirm --no-recommends 'curl>=8.8' libopenssl1_1 || \
-    zypper --non-interactive in --force-resolution --no-confirm --oldpackage --no-recommends 'curl<8.6' libopenssl1_1
-
-# And then lock it so we don't change the version later
-run_cmd_retry zypper --non-interactive al curl
-
-# Remove the backlevel repo(s) so we don't pull other images from it
-S=5
-while [[ $S -lt $SP ]]; do
-    remove_zypper_repos Module-Basesystem "$S"
-    let S+=1
-done
-#############################################################################
+# This is not needed for cray-aee
+run_cmd_retry zypper --non-interactive rm -uy container-suseconnect
+# Lock just to prevent it getting added back
+run_cmd_retry zypper --non-interactive al container-suseconnect
 
 run_cmd_retry zypper --non-interactive ar --no-gpgcheck "${CSM_SLES_REPO_URI}" csm-sles
 run_cmd_retry zypper --non-interactive ar --no-gpgcheck "${CSM_NOOS_REPO_URI}" csm-noos
@@ -140,8 +114,33 @@ run_cmd_retry zypper --non-interactive in -f --no-confirm csm-ssh-keys-${CSM_SSH
 run_cmd_retry zypper --non-interactive al csm-ssh-keys
 # Apply security patches (this script also does a zypper clean)
 ./zypper-refresh-patch-clean.sh
-# Remove all repos & scrub the zypper directory 
-run_cmd_retry zypper --non-interactive rr --all
+
+#############################################################################
+# curl bug workaround
+#############################################################################
+
+run_cmd_retry zypper --non-interactive ar https://download.opensuse.org/tumbleweed/repo/oss/ tumbleweed-oss
+run_cmd_retry zypper --non-interactive --gpg-auto-import-keys refresh
+
+# Try to install a newer version
+run_cmd_retry zypper \
+    --non-interactive in \
+    --force-resolution \
+    --no-confirm \
+    --no-recommends \
+    --allow-arch-change \
+    --allow-vendor-change \
+    --solver-focus Installed \
+    'curl>=8.8' 'libcurl4>=8.8' libopenssl1_1
+
+# This will have broken zypper (because it depends on libcurl4), so remove It
+# (using rpm command, since zypper cannot)
+rpm -e zypper libzypp
+
+#############################################################################
+# end curl bug workaround
+#############################################################################
+
 rm -f /etc/zypp/repos.d/*
 
 # Manually set the links that SLES neglects to do for us
