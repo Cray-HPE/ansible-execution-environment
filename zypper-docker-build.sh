@@ -89,6 +89,7 @@ function remove_zypper_repos {
 
 function zypper_in
 {
+    echo "run_cmd_retry zypper --non-interactive in --force-resolution --no-confirm --no-recommends --solver-focus Installed $*"
     run_cmd_retry zypper \
         --non-interactive in \
         --force-resolution \
@@ -169,8 +170,12 @@ run_cmd_retry zypper --non-interactive rr tumbleweed-src-oss
 
 build_rpm nghttp3
 
+zypper --version
+zypper in --help || true
+
 # This will set the $RPMS variable to the RPMs we want to install
 get_rpms
+echo "RPMS: $RPMS"
 zypper_in --allow-unsigned-rpm ${RPMS}
 rm -v ${RPMS}
 
