@@ -119,6 +119,12 @@ run_cmd_retry zypper --non-interactive al csm-ssh-keys
 # curl bug workaround
 #############################################################################
 
+for X in libopenssl-3-devel libopenssl-devel libopenssl3 libssh-config libssh4 openssl openssl-3 libnghttp2; do
+echo $X
+zypper --non-interactive rm -DUy $X | grep -A1 -E 'going to be REMOVED:$'
+done
+rpm -q libnghttp2
+
 run_cmd_retry zypper --non-interactive ar https://download.opensuse.org/tumbleweed/repo/oss/ tumbleweed-oss
 run_cmd_retry zypper --non-interactive --gpg-auto-import-keys refresh
 
@@ -131,7 +137,7 @@ run_cmd_retry zypper \
     --allow-arch-change \
     --allow-vendor-change \
     --solver-focus Installed \
-    'curl>=8.8' 'libcurl4>=8.8' libopenssl1_1
+    'curl>=8.8' 'libcurl4>=8.8' libopenssl1_1 libnghttp2
 
 # This will have broken zypper (because it depends on libcurl4), so remove It
 # (using rpm command, since zypper cannot)
