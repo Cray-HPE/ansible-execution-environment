@@ -174,7 +174,15 @@ mv -v ${RPM_DIR}/noarch ${RPM_DIR}/${ARCH} ${TMPREPO}
 mkdir -pv ${RPM_DIR}/noarch ${RPM_DIR}/${ARCH}
 createrepo_c ${TMPREPO}
 run_cmd_retry zypper --non-interactive ar --refresh --no-gpgcheck ${TMPREPO} built-rpms
-zypper_in libnghttp3 nghttp3-devel
+zypper --non-interactive search -r built-rpms '*' \
+    | grep -E '\| package$' \
+    | cut -d\| -f2 \
+    | xargs zypper \
+        --non-interactive in \
+        --force-resolution \
+        --no-confirm \
+        --no-recommends \
+        --solver-focus Installed
 run_cmd_retry zypper --non-interactive rr built-rpms
 rm -rf ${TMPREPO}
 
