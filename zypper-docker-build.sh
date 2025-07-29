@@ -87,6 +87,17 @@ function remove_zypper_repos {
     run_cmd_retry zypper --non-interactive rr "sles15sp${repo_sp}-${label}-update"
 }
 
+function zypper_in
+{
+    run_cmd_retry zypper \
+        --non-interactive in \
+        --force-resolution \
+        --no-confirm \
+        --no-recommends \
+        --solver-focus Installed \
+        "$@"
+}
+
 if [[ ${SP} -lt 5 ]]; then
     # The mirrors for these earlier SLES SPs are no longer available
     echo "ERROR: SP == $SP, but must be 5+" >&2
@@ -100,10 +111,76 @@ for MODULE in Basesystem Certifications Containers Development-Tools Python3; do
     add_zypper_repos "Module-${MODULE}"
 done
 
-# This is not needed for cray-aee
-run_cmd_retry zypper --non-interactive rm -uy container-suseconnect
-# Lock just to prevent it getting added back
-run_cmd_retry zypper --non-interactive al container-suseconnect
+run_cmd_retry zypper --non-interactive --gpg-auto-import-keys refresh
+
+# libopenssl1_1 is needed for cray-aee
+zypper_in libopenssl1_1
+
+#############################################################################
+# curl bug workaround pt 1
+#############################################################################
+# * There is a bug in curl that breaks some operations
+#   https://github.com/curl/curl/issues/13229
+#   We know that it is not yet present in curl v8.5 and is fixed in v8.8.
+# * There is a CVE that exists in curl v8 up until v8.8
+#
+# However, the latest curl version in the SLES repos (up through SP7,
+# the latest available) is 8.6. So this workaround builds curl v8.15 from
+# source
+
+function zypper_src_in
+{
+    run_cmd_retry zypper \
+        --non-interactive source-install \
+        --force-resolution \
+        --no-confirm \
+        --no-recommends \
+        --solver-focus Installed \
+        "$@"
+}
+
+PKG_DIR="/usr/src/packages"
+
+function get_rpms
+{
+    RPMS=$(ls ${PKG_DIR}/RPMS/noarch/*.rpm ${PKG_DIR}/RPMS/${ARCH}/*.rpm 2>/dev/null || true)
+    [[ -z ${RPMS} ]] || return 0
+    echo "ERROR: No RPMs found under ${PKG_DIR}/RPMS/noarch or ${PKG_DIR}/RPMS/${ARCH}" 1>&2
+    exit 1
+}
+
+function build_rpm
+{
+    pushd "${PKG_DIR}"
+    rpmbuild -ba SPECS/${1}.spec
+    popd
+}
+
+# rpm-build will be needed to build packages, which we do later
+zypper_in rpm-build
+
+run_cmd_retry zypper --non-interactive ar https://download.opensuse.org/tumbleweed/repo/src-oss/ tumbleweed-src-oss
+run_cmd_retry zypper --non-interactive --gpg-auto-import-keys refresh
+
+# nghttp3-devel and libnghttp3 are needed to build curl, so first we build those
+zypper_src_in nghttp3
+
+build_rpm nghttp3
+
+# This will set the $RPMS variable to the RPMs we want to install
+get_rpms
+zypper --allow-unsigned-rpm ${RPMS}
+rm -v ${RPMS}
+
+zypper_src_in 'curl>=8.8' 'libcurl4>=8.8'
+build_rpm curl
+
+# We are now done with rpm builds
+run_cmd_retry zypper --non-interactive rm --no-confirm --force-resolution --no-clean-deps rpm-build
+
+#############################################################################
+# end curl bug workaround pt 1
+#############################################################################
 
 run_cmd_retry zypper --non-interactive ar --no-gpgcheck "${CSM_SLES_REPO_URI}" csm-sles
 run_cmd_retry zypper --non-interactive ar --no-gpgcheck "${CSM_NOOS_REPO_URI}" csm-noos
@@ -116,38 +193,26 @@ run_cmd_retry zypper --non-interactive al csm-ssh-keys
 ./zypper-refresh-patch-clean.sh
 
 #############################################################################
-# curl bug workaround
+# curl bug workaround pt 2
 #############################################################################
 
-for X in libopenssl-3-devel libopenssl-devel libopenssl3 libssh-config libssh4 openssl openssl-3 libnghttp2; do
-echo $X
-zypper --non-interactive rm -DUy $X | grep -A1 -E 'going to be REMOVED:$'
-done
-rpm -q libnghttp2
+# Replacing curl will break zypper, libzypp, and container-suseconnect
+# Kind of sad to make zypper uninstall itself, but nothing to be done about it.
+run_cmd_retry zypper --non-interactive rm --no-confirm --force-resolution --no-clean-deps container-suseconnect zypper libzypp
 
-run_cmd_retry zypper --non-interactive ar https://download.opensuse.org/tumbleweed/repo/oss/ tumbleweed-oss
-run_cmd_retry zypper --non-interactive --gpg-auto-import-keys refresh
+# This will set the $RPMS variable to the RPMs we want to update (the curl RPMs we built earlier)
+get_rpms
+rpm -F --nosignature ${RPMS}
 
-# Try to install a newer version
-run_cmd_retry zypper \
-    --non-interactive in \
-    --force-resolution \
-    --no-confirm \
-    --no-recommends \
-    --allow-arch-change \
-    --allow-vendor-change \
-    --solver-focus Installed \
-    'curl>=8.8' 'libcurl4>=8.8' libopenssl1_1 libnghttp2
-
-# This will have broken zypper (because it depends on libcurl4), so remove It
-# (using rpm command, since zypper cannot)
-rpm -e zypper libzypp
+# Remove RPM build dir entirely
+rm -rvf "${PKG_DIR}"
 
 #############################################################################
-# end curl bug workaround
+# end curl bug workaround pt 2
 #############################################################################
 
-rm -f /etc/zypp/repos.d/*
+# Scrub the zypper directory 
+[[ ! -d /etc/zypp ]] || rm -rf /etc/zypp
 
 # Manually set the links that SLES neglects to do for us
 update-alternatives --install /usr/bin/pip pip /usr/bin/pip3.11 99
