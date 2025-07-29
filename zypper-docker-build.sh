@@ -157,7 +157,7 @@ function build_rpm
 }
 
 # rpm-build will be needed to build packages, which we do later
-zypper_in rpm-build
+zypper_in rpm-build createrepo_c
 
 run_cmd_retry zypper --non-interactive ar https://download.opensuse.org/tumbleweed/repo/src-oss/ tumbleweed-src-oss
 run_cmd_retry zypper --non-interactive --gpg-auto-import-keys refresh
@@ -167,11 +167,15 @@ zypper_src_in nghttp3
 
 build_rpm nghttp3
 
-# This will set the $RPMS variable to the RPMs we want to install
-get_rpms
-echo "RPMS: $RPMS"
-zypper_in --allow-unsigned-rpm ${RPMS}
-rm -v ${RPMS}
+TMPREPO=$(mktemp -d)
+mkdir -pv ${PKG_DIR}/noarch ${PKG_DIR}/${ARCH}
+mv -v ${PKG_DIR}/noarch ${PKG_DIR}/${ARCH} ${TMPREPO}
+mkdir -pv ${PKG_DIR}/noarch ${PKG_DIR}/${ARCH}
+createrepo_c ${TMPREPO}
+run_cmd_retry zypper --non-interactive ar --refresh --no-gpgcheck ${TMPREPO} built-rpms
+zypper_in libnghttp3 nghttp3-devel
+run_cmd_retry zypper --non-interactive rr built-rpms
+rm -rf ${TMPREPO}
 
 zypper_src_in 'curl>=8.8' 'libcurl4>=8.8'
 
@@ -179,13 +183,19 @@ zypper_src_in 'curl>=8.8' 'libcurl4>=8.8'
 run_cmd_retry zypper --non-interactive rr tumbleweed-src-oss
 
 build_rpm curl
+TMPREPO=$(mktemp -d)
+mkdir -pv ${PKG_DIR}/noarch ${PKG_DIR}/${ARCH}
+mv -v ${PKG_DIR}/noarch ${PKG_DIR}/${ARCH} ${TMPREPO}
+mkdir -pv ${PKG_DIR}/noarch ${PKG_DIR}/${ARCH}
+createrepo_c ${TMPREPO}
+run_cmd_retry zypper --non-interactive ar --refresh --no-gpgcheck ${TMPREPO} built-rpms
+# Update all RPMs that we just built
+run_cmd_retry zypper --non-interactive --no-gpg-checks up --no-confirm --force-resolution --no-recommends -r built-rpms
+run_cmd_retry zypper --non-interactive rr built-rpms
+rm -rf ${TMPREPO}
 
 # We are now done with rpm builds
-run_cmd_retry zypper --non-interactive rm --no-confirm --force-resolution --no-clean-deps rpm-build
-
-get_rpms
-echo "RPMS: $RPMS"
-zypper --non-interactive --no-gpg-checks up --no-confirm --force-resolution --no-recommends ${RPMS}
+run_cmd_retry zypper --non-interactive rm --no-confirm --force-resolution --no-clean-deps rpm-build createrepo_c
 
 # Remove RPM build dir entirely
 rm -rvf "${PKG_DIR}"
