@@ -134,8 +134,6 @@ function zypper_src_in
     run_cmd_retry zypper \
         --non-interactive source-install \
         --force-resolution \
-        --no-recommends \
-        --solver-focus Installed \
         "$@"
 }
 
