@@ -171,7 +171,7 @@ build_rpm nghttp3
 
 # This will set the $RPMS variable to the RPMs we want to install
 get_rpms
-zypper --allow-unsigned-rpm ${RPMS}
+zypper_in --allow-unsigned-rpm ${RPMS}
 rm -v ${RPMS}
 
 zypper_src_in 'curl>=8.8' 'libcurl4>=8.8'
