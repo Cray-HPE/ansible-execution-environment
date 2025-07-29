@@ -143,7 +143,7 @@ PKG_DIR="/usr/src/packages"
 
 function get_rpms
 {
-    RPMS=$(ls ${PKG_DIR}/RPMS/noarch/*.rpm ${PKG_DIR}/RPMS/${ARCH}/*.rpm 2>/dev/null || true)
+    RPMS=$(ls ${PKG_DIR}/RPMS/noarch/*.rpm ${PKG_DIR}/RPMS/${ARCH}/*.rpm 2>/dev/null | tr '\n' ' ' || true)
     [[ -z ${RPMS} ]] || return 0
     echo "ERROR: No RPMs found under ${PKG_DIR}/RPMS/noarch or ${PKG_DIR}/RPMS/${ARCH}" 1>&2
     exit 1
@@ -165,13 +165,7 @@ run_cmd_retry zypper --non-interactive --gpg-auto-import-keys refresh
 # nghttp3-devel and libnghttp3 are needed to build curl, so first we build those
 zypper_src_in nghttp3
 
-# We are done with the source repo
-run_cmd_retry zypper --non-interactive rr tumbleweed-src-oss
-
 build_rpm nghttp3
-
-zypper --version
-zypper in --help || true
 
 # This will set the $RPMS variable to the RPMs we want to install
 get_rpms
@@ -180,10 +174,21 @@ zypper_in --allow-unsigned-rpm ${RPMS}
 rm -v ${RPMS}
 
 zypper_src_in 'curl>=8.8' 'libcurl4>=8.8'
+
+# We are done with the source repo
+run_cmd_retry zypper --non-interactive rr tumbleweed-src-oss
+
 build_rpm curl
 
 # We are now done with rpm builds
 run_cmd_retry zypper --non-interactive rm --no-confirm --force-resolution --no-clean-deps rpm-build
+
+get_rpms
+echo "RPMS: $RPMS"
+zypper --non-interactive --no-gpg-checks up --no-confirm --force-resolution --no-recommends ${RPMS}
+
+# Remove RPM build dir entirely
+rm -rvf "${PKG_DIR}"
 
 #############################################################################
 # end curl bug workaround pt 1
@@ -199,26 +204,8 @@ run_cmd_retry zypper --non-interactive al csm-ssh-keys
 # Apply security patches (this script also does a zypper clean)
 ./zypper-refresh-patch-clean.sh
 
-#############################################################################
-# curl bug workaround pt 2
-#############################################################################
-
-# Replacing curl will break zypper, libzypp, and container-suseconnect
-# Kind of sad to make zypper uninstall itself, but nothing to be done about it.
-run_cmd_retry zypper --non-interactive rm --no-confirm --force-resolution --no-clean-deps container-suseconnect zypper libzypp
-
-# This will set the $RPMS variable to the RPMs we want to update (the curl RPMs we built earlier)
-get_rpms
-rpm -F --nosignature ${RPMS}
-
-# Remove RPM build dir entirely
-rm -rvf "${PKG_DIR}"
-
-#############################################################################
-# end curl bug workaround pt 2
-#############################################################################
-
-# Scrub the zypper directory 
+# Remove all repos & scrub the zypper directory
+run_cmd_retry zypper --non-interactive rr --all
 [[ ! -d /etc/zypp ]] || rm -rf /etc/zypp
 
 # Manually set the links that SLES neglects to do for us
