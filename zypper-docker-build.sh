@@ -133,7 +133,6 @@ function zypper_src_in
     run_cmd_retry zypper \
         --non-interactive source-install \
         --force-resolution \
-        --no-confirm \
         --no-recommends \
         --solver-focus Installed \
         "$@"
@@ -164,6 +163,9 @@ run_cmd_retry zypper --non-interactive --gpg-auto-import-keys refresh
 
 # nghttp3-devel and libnghttp3 are needed to build curl, so first we build those
 zypper_src_in nghttp3
+
+# We are done with the source repo
+run_cmd_retry zypper --non-interactive rr tumbleweed-src-oss
 
 build_rpm nghttp3
 
