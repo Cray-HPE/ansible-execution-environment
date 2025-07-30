@@ -155,6 +155,8 @@ function build_rpm
     popd
 }
 
+ls -al /usr/share/info || true
+
 # rpm-build will be needed to build packages, which we do later
 zypper_in rpm-build createrepo_c
 
@@ -184,6 +186,7 @@ zypper --non-interactive search -r built-rpms '*' \
 run_cmd_retry zypper --non-interactive rr built-rpms
 rm -rf ${TMPREPO}
 
+ls -al /usr/share/info || true
 zypper --non-interactive --verbose source-install --force-resolution 'curl>=8.8' 'libcurl4>=8.8' && rc=0 || rc=$?
 echo "rc $rc"
 if [[ $rc -ne 0 && $rc -ne 104 ]]; then
