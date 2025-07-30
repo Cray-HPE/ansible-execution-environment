@@ -155,10 +155,14 @@ function build_rpm
     popd
 }
 
+echo "ls -al /usr/share/info"
 ls -al /usr/share/info || true
 
 # rpm-build will be needed to build packages, which we do later
-zypper_in rpm-build createrepo_c
+zypper_in rpm-build createrepo_c info man
+
+echo "ls -al /usr/share/info"
+ls -al /usr/share/info || true
 
 run_cmd_retry zypper --non-interactive ar https://download.opensuse.org/tumbleweed/repo/src-oss/ tumbleweed-src-oss
 run_cmd_retry zypper --non-interactive --gpg-auto-import-keys refresh
@@ -186,13 +190,19 @@ zypper --non-interactive search -r built-rpms '*' \
 run_cmd_retry zypper --non-interactive rr built-rpms
 rm -rf ${TMPREPO}
 
+echo "ls -al /usr/share/info"
 ls -al /usr/share/info || true
+
 zypper --non-interactive --verbose source-install --force-resolution 'curl>=8.8' 'libcurl4>=8.8' && rc=0 || rc=$?
 echo "rc $rc"
 if [[ $rc -ne 0 && $rc -ne 104 ]]; then
     echo "ERROR" 1>&2
     exit 1
 fi
+
+echo "ls -al /usr/share/info"
+ls -al /usr/share/info || true
+
 
 # We are done with the source repo
 run_cmd_retry zypper --non-interactive rr tumbleweed-src-oss
