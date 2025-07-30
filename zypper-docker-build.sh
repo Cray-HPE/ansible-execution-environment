@@ -132,7 +132,7 @@ zypper_in libopenssl1_1
 function zypper_src_in
 {
     run_cmd_retry zypper \
-        --non-interactive source-install \
+        --non-interactive --verbose source-install \
         --force-resolution \
         "$@"
 }
@@ -184,7 +184,7 @@ zypper --non-interactive search -r built-rpms '*' \
 run_cmd_retry zypper --non-interactive rr built-rpms
 rm -rf ${TMPREPO}
 
-zypper_src_in -v  'curl>=8.8' 'libcurl4>=8.8' && rc=0 || rc=$?
+zypper_src_in 'curl>=8.8' 'libcurl4>=8.8' && rc=0 || rc=$?
 echo "rc $rc"
 if [[ $rc -ne 0 && $rc -ne 104 ]]; then
     echo "ERROR" 1>&2
