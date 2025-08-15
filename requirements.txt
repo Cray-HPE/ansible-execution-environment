@@ -17,12 +17,20 @@ jmespath
 
 # Additional modules that we want to install so that they will be available
 # for scripts that may be run by Ansible roles inside the AEE container
+annotated-types
 boto3
 botocore
+cray-product-catalog
+Jinja2
 jsonref
 jsonschema
+netaddr
+pydantic
+PyJWT
 python-dateutil
+python-keycloak
 PyYAML
 requests
+semver
 typing_extensions
 urllib3
