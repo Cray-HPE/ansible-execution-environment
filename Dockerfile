@@ -74,6 +74,7 @@ RUN ansible-galaxy collection install  \
         ansible.netcommon \
         ansible.posix \
         ansible.utils \
+        ceph.automation \
         containers.podman \
         community.crypto \
         community.general \
