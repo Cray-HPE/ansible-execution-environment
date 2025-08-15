@@ -52,6 +52,12 @@ RUN --mount=type=secret,id=netrc,target=/root/.netrc \
     python3 -m pip install --no-cache-dir -U pip wheel && \
     python3 -m pip install --no-cache-dir -r requirements.txt && \
     python3 -m pip list --format freeze && \
+    echo find1 && \
+    find . -iname '/opt/cray/ansible/requirements/*.txt' -print && \
+    echo find1 done && \
+    echo find2 && \
+    find /opt/cray/ansible -iname '*requirements*.txt' -print -o -iname '*constraints*.txt' -print && \
+    echo find2 done && \
     find . -iname '/opt/cray/ansible/requirements/*.txt' -print -exec \
         python3 -m pip install --no-cache-dir -c constraints.txt -r "{}" \; && \
     python3 -m pip list --format freeze
@@ -76,6 +82,7 @@ RUN ansible-galaxy collection install -vvv \
         ansible.netcommon:5.3.0 \
         ansible.posix:1.5.4 \
         ansible.utils:2.12.0 \
+        ceph.automation \
         containers.podman:1.10.4 \
         community.crypto:2.15.1 \
         community.general:7.5.9 \
