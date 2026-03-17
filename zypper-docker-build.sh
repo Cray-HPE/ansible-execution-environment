@@ -2,7 +2,7 @@
 #
 # MIT License
 #
-# (C) Copyright 2023-2024 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2023-2026 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -63,7 +63,7 @@ function run_cmd_retry
     return $rc
 }
 
-function add_zypper_repos {
+function add_zypper_product_repo {
     local label repo_sp
     label=$1
     if [[ $# -eq 2 ]]; then
@@ -72,7 +72,29 @@ function add_zypper_repos {
         repo_sp=${SP}
     fi
     run_cmd_retry zypper --non-interactive ar "${SLES_PRODUCTS_URL}/SLE-${label}/15-SP${repo_sp}/${ARCH}/product/?auth=basic" "sles15sp${repo_sp}-${label}-product"
+}
+
+function add_zypper_update_repo {
+    local label repo_sp
+    label=$1
+    if [[ $# -eq 2 ]]; then
+        repo_sp=$2
+    else
+        repo_sp=${SP}
+    fi
     run_cmd_retry zypper --non-interactive ar "${SLES_UPDATES_URL}/SLE-${label}/15-SP${repo_sp}/${ARCH}/update/?auth=basic" "sles15sp${repo_sp}-${label}-update"
+}
+
+function add_zypper_repos {
+    local label repo_sp
+    label=$1
+    if [[ $# -eq 2 ]]; then
+        repo_sp=$2
+    else
+        repo_sp=${SP}
+    fi
+    add_zypper_product_repo "${label}" "${repo_sp}"
+    add_zypper_update_repo "${label}" "${repo_sp}"
 }
 
 function remove_zypper_repos {
@@ -99,6 +121,12 @@ run_cmd_retry zypper --non-interactive clean -a
 for MODULE in Basesystem Certifications Containers Development-Tools Python3; do
     add_zypper_repos "Module-${MODULE}"
 done
+add_zypper_repos Product-SLES
+# SP < 7 also have LTSS update repos
+# Once SP 7 goes LTSS, this should be updated accordingly
+if [[ $SP -lt 7 ]]; then
+    add_zypper_update_repo Product-SLES "${SP}-LTSS"
+fi
 
 #############################################################################
 # curl bug workaround

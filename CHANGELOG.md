@@ -11,6 +11,9 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+### Dependencies
+- CASMCMS-9631: Apply SLES LTSS updates to resolve CVEs.
+
 ## [1.21.0] - 2025-07-01
 
 ### Added
