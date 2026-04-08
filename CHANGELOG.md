@@ -11,6 +11,9 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+### Dependencies
+- CASMCMS-9638: Update `zypper-refresh-patch-clean.sh` to ensure it applies all necessary patches
+
 ## [1.21.0] - 2025-07-01
 
 ### Added
