@@ -13,6 +13,9 @@ this does, see the README.md entry.
 
 ### Dependencies
 - CASMCMS-9638: Update `zypper-refresh-patch-clean.sh` to ensure it applies all necessary patches
+- CASMCMS-9637: Update `zypper-docker-build.sh`
+    - Include SLE LTSS zypper repositories, in order to pick up CVE fixes
+    - Create single version across the github repos which use it
 
 ## [1.21.0] - 2025-07-01
 

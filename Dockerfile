@@ -1,7 +1,7 @@
 #
 # MIT License
 #
-# (C) Copyright 2019-2024 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2019-2024, 2026 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -40,8 +40,29 @@ COPY zypper-docker-build.sh /
 # The above script calls the following script, so we need to copy it as well
 COPY zypper-refresh-patch-clean.sh /
 RUN --mount=type=secret,id=ARTIFACTORY_READONLY_USER --mount=type=secret,id=ARTIFACTORY_READONLY_TOKEN \
-    ./zypper-docker-build.sh && \
-    rm /zypper-docker-build.sh /zypper-refresh-patch-clean.sh
+    ./zypper-docker-build.sh \
+        python311-devel \
+        python311-pip \
+        gcc \
+        libopenssl-devel \
+        libopenssl1_1 \
+        openssh \
+        less \
+        catatonit \
+        rsync \
+        glibc-locale-base \
+        jq \
+        ca-certificates \
+        curl \
+        csm-ssh-keys-${CSM_SSH_KEYS_VERSION} \
+        --lock csm-ssh-keys
+
+# Remove scripts and manually set the links that SLES neglects to do for us
+RUN rm /zypper-docker-build.sh /zypper-refresh-patch-clean.sh && \
+    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3.11 99 && \
+    update-alternatives --install /usr/bin/pip3 pip3 /usr/bin/pip3.11 99 && \
+    update-alternatives --install /usr/bin/pydoc3 pydoc3 /usr/bin/pydoc3.11 99 && \
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 99
 
 COPY requirements.txt constraints.txt /
 ENV LANG=C.utf8
