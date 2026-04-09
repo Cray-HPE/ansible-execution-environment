@@ -18,6 +18,7 @@ this does, see the README.md entry.
     - Update Python `requests` from `2.22` to `2.30`
     - Update SOPS from `3.6.1` to `3.12.2`
     - Update Ansible community SOPS from `1.6.6` to `1.9.1`
+- CASMCMS-9639: Update `ara` from `1.5` to `1.7.2` to match `cfs-ara` repository
 
 ## [1.21.1] - 2026-04-09
 
