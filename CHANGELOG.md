@@ -11,6 +11,14 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+### Dependencies
+
+- CASMCMS-9639: Resolve CVEs
+    - Update Python `urllib3` from `1.25` to `2.6`
+    - Update Python `requests` from `2.22` to `2.30`
+    - Update SOPS from `3.6.1` to `3.12.2`
+    - Update Ansible community SOPS from `1.6.6` to `1.9.1`
+
 ## [1.21.1] - 2026-04-09
 
 ### Dependencies

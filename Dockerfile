@@ -30,10 +30,16 @@ ARG ARCH=x86_64
 # Pin the version of csm-ssh-keys being installed. The actual version is substituted by
 # the runBuildPrep script at build time
 ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
-ARG SOPS_VERSION=3.6.1
+
+# Ideally the SOPS version in AEE should match or exceed the SOPS version installed on the Kubernetes NCNs
+# See node-images repo, metal-provision/group_vars/kubernetes/packages.suse.yml
+ARG SOPS_VERSION=3.12.2
 ARG SOPS_REBUILD_ID=1
 ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-${SOPS_VERSION}-${SOPS_REBUILD_ID}.${ARCH}.rpm
-ARG COMMUNITY_SOPS_VERSION=1.6.6
+
+# Community SOPS v1 is the last major version before support was dropped for Ansible 2.14 and earlier
+# Do not move to v2+ unless the Ansible version is also updated
+ARG COMMUNITY_SOPS_VERSION=1.9.1
 
 # Do zypper operations using a wrapper script, to isolate the necessary artifactory authentication
 COPY zypper-docker-build.sh /
@@ -90,6 +96,10 @@ RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/
 
 # Add community modules and pre-install necessary binaries to support them from the distro
 RUN curl -L --output sops.rpm ${SOPS_RPM_SOURCE} && rpm -ivh sops.rpm
+# Because we are using ansible-core 2.11, our ansible.cfg file points to old-galaxy.ansible.com
+# This is fine for everything we want to install except for the SOPS community package, because
+# the version we want is not published there (although it does still support ansible-core 2.11).
+# So that collection is installed with a second command, pointing to galaxy.ansible.com
 RUN ansible-galaxy collection install  \
         amazon.aws:5.2.0 \
         ansible.netcommon \
@@ -100,9 +110,8 @@ RUN ansible-galaxy collection install  \
         community.general \
         community.hashi_vault:3.0.0 \
         community.libvirt \
-        community.sops:$COMMUNITY_SOPS_VERSION \
-        kubernetes.core
-
+        kubernetes.core && \
+    ansible-galaxy collection install community.sops:$COMMUNITY_SOPS_VERSION --server https://galaxy.ansible.com/
 
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /
