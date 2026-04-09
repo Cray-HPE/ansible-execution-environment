@@ -11,6 +11,8 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+## [1.21.1] - 2026-04-09
+
 ### Dependencies
 - CASMCMS-9638: Update `zypper-refresh-patch-clean.sh` to ensure it applies all necessary patches
 - CASMCMS-9637: Update `zypper-docker-build.sh`
