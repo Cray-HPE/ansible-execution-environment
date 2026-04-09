@@ -11,6 +11,8 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+## [1.22.0] - 2026-04-09
+
 ### Dependencies
 
 - CASMCMS-9639: Resolve CVEs
