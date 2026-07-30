@@ -1,5 +1,6 @@
 # SOPS v3.13 requires ansible-core >= 2.15
-ansible-core>=2.15,<2.16
+# ansible-core 2.15 contains a CVE that is resolved in 2.17.6
+ansible-core>=2.17.6,<2.18
 # This should match the ARA version in the cfs-ara repo
 ara==1.7.2
 asn1crypto>=0.24,<0.25
