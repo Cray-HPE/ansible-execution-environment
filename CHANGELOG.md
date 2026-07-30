@@ -17,6 +17,7 @@ this does, see the README.md entry.
     - Update Python `ansible-core` from `2.11.12` to `2.15`
     - Update Python `Jinja2` from `2.10.3` to `3`
     - Update Python `MarkupSafe` from `1.1.1` to `2`
+    - Update Python `urllib3` from `2.6.3` to `2.7`
     - Update SOPS from `3.12.2` to `3.13.3`
 
 ## [1.22.0] - 2026-04-09
