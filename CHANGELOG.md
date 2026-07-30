@@ -14,7 +14,7 @@ this does, see the README.md entry.
 ### Dependencies
 
 - CASMCMS-9507: Resolve CVEs
-    - Update Python `ansible-core` from `2.11.12` to `2.15`
+    - Update Python `ansible-core` from `2.11.12` to `2.17.6`
     - Update Python `Jinja2` from `2.10.3` to `3`
     - Update Python `MarkupSafe` from `1.1.1` to `2`
     - Update Python `urllib3` from `2.6.3` to `2.7`
