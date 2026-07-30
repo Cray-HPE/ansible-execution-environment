@@ -17,6 +17,7 @@ this does, see the README.md entry.
 
 | Package                | From        | To         |
 |------------------------|-------------|------------|
+| `ansible-core`         | `2.11.12`   | `2.15`     |
 | `certifi`              | `2023.7.22` | `2024.7.4` |
 | `cffi`                 | `1.17`      | `2.0.x`    |
 | `cryptography`         | `41.0.2`    | `48.0.1`   |
@@ -30,6 +31,9 @@ this does, see the README.md entry.
 | `setuptools`           | not pinned  | `83+`      |
 | `urllib3`              | `2.6.3`     | `2.7`      |
 | `wheel`                | not pinned  | `0.46.2+`  |
+
+- CASMCMS-9507: Resolve CVEs
+    - Update SOPS from `3.12.2` to `3.13.3`
 
 ## [1.22.0] - 2026-04-09
 
