@@ -14,8 +14,11 @@ this does, see the README.md entry.
 ### Dependencies
 
 - CASMCMS-9507: Resolve CVEs
-    - Update Python `ansible-core` from `2.11.12` to `2.17.6`
-    - Update Python `Jinja2` from `2.10.3` to `3`
+    - Update base image from SLE15 SP6 to SP7.
+    - Update Python from `3.11` to `3.13`
+    - Update Ansible community SOPS module from `1.9.1` to `2.0.5`.
+    - Update Python `ansible-core` from `2.11.12` to `2.21.1`
+    - Update Python `Jinja2` from `2.10.3` to `3.1`
     - Update Python `MarkupSafe` from `1.1.1` to `2`
     - Update Python `urllib3` from `2.6.3` to `2.7`
     - Update SOPS from `3.12.2` to `3.13.3`

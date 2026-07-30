@@ -21,10 +21,10 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
-FROM artifactory.algol60.net/registry.suse.com/suse/sle15:15.6 AS base
+FROM artifactory.algol60.net/registry.suse.com/suse/sle15:15.7 AS base
 
 # Set the SLES SP number and hardware architecture
-ARG SP=6
+ARG SP=7
 ARG ARCH=x86_64
 
 # Pin the version of csm-ssh-keys being installed. The actual version is substituted by
@@ -38,8 +38,8 @@ ARG SOPS_REBUILD_ID=1
 ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-${SOPS_VERSION}-${SOPS_REBUILD_ID}.${ARCH}.rpm
 
 # Community SOPS v1 is the last major version before support was dropped for Ansible 2.14 and earlier
-# Do not move to v2+ unless the Ansible version is compatible
-ARG COMMUNITY_SOPS_VERSION=1.9.1
+# Ensure that community SOPS version and Ansible version are compatible before making changes
+ARG COMMUNITY_SOPS_VERSION=2.0.5
 
 # Do zypper operations using a wrapper script, to isolate the necessary artifactory authentication
 COPY zypper-docker-build.sh /
@@ -47,8 +47,8 @@ COPY zypper-docker-build.sh /
 COPY zypper-refresh-patch-clean.sh /
 RUN --mount=type=secret,id=ARTIFACTORY_READONLY_USER --mount=type=secret,id=ARTIFACTORY_READONLY_TOKEN \
     ./zypper-docker-build.sh \
-        python311-devel \
-        python311-pip \
+        python313-devel \
+        python313-pip \
         gcc \
         libopenssl-devel \
         libopenssl1_1 \
@@ -65,10 +65,10 @@ RUN --mount=type=secret,id=ARTIFACTORY_READONLY_USER --mount=type=secret,id=ARTI
 
 # Remove scripts and manually set the links that SLES neglects to do for us
 RUN rm /zypper-docker-build.sh /zypper-refresh-patch-clean.sh && \
-    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3.11 99 && \
-    update-alternatives --install /usr/bin/pip3 pip3 /usr/bin/pip3.11 99 && \
-    update-alternatives --install /usr/bin/pydoc3 pydoc3 /usr/bin/pydoc3.11 99 && \
-    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 99
+    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3.13 99 && \
+    update-alternatives --install /usr/bin/pip3 pip3 /usr/bin/pip3.13 99 && \
+    update-alternatives --install /usr/bin/pydoc3 pydoc3 /usr/bin/pydoc3.13 99 && \
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 99
 
 COPY requirements.txt constraints.txt /
 ENV LANG=C.utf8
@@ -96,10 +96,6 @@ RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/
 
 # Add community modules and pre-install necessary binaries to support them from the distro
 RUN curl -L --output sops.rpm ${SOPS_RPM_SOURCE} && rpm -ivh sops.rpm
-# Because we are using ansible-core 2.11, our ansible.cfg file points to old-galaxy.ansible.com
-# This is fine for everything we want to install except for the SOPS community package, because
-# the version we want is not published there (although it does still support ansible-core 2.11).
-# So that collection is installed with a second command, pointing to galaxy.ansible.com
 RUN ansible-galaxy collection install  \
         amazon.aws:5.2.0 \
         ansible.netcommon \
@@ -110,8 +106,8 @@ RUN ansible-galaxy collection install  \
         community.general \
         community.hashi_vault:3.0.0 \
         community.libvirt \
-        kubernetes.core && \
-    ansible-galaxy collection install community.sops:$COMMUNITY_SOPS_VERSION --server https://galaxy.ansible.com/
+        community.sops:$COMMUNITY_SOPS_VERSION \
+        kubernetes.core
 
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /
