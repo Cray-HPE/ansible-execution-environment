@@ -11,6 +11,14 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+### Dependencies
+
+- CASMCMS-9507: Resolve CVEs
+    - Update Python `ansible-core` from `2.11.12` to `2.15`
+    - Update Python `Jinja2` from `2.10.3` to `3`
+    - Update Python `MarkupSafe` from `1.1.1` to `2`
+    - Update SOPS from `3.12.2` to `3.13.3`
+
 ## [1.22.0] - 2026-04-09
 
 ### Dependencies
