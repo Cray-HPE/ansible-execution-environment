@@ -74,7 +74,7 @@ COPY requirements.txt constraints.txt /
 ENV LANG=C.utf8
 RUN --mount=type=secret,id=netrc,target=/root/.netrc \
     python3 --version && \
-    python3 -m pip install --no-cache-dir -U pip wheel && \
+    python3 -m pip install --no-cache-dir -U pip setuptools wheel -c constraints.txt && \
     python3 -m pip install --no-cache-dir -r requirements.txt && \
     python3 -m pip list --format freeze && \
     find . -iname '/opt/cray/ansible/requirements/*.txt' -print -exec \

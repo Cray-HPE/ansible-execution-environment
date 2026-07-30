@@ -11,6 +11,26 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+### Dependencies
+
+- CASMCMS-9507: Update Python modules to resolve CVEs
+
+| Package                | From        | To         |
+|------------------------|-------------|------------|
+| `certifi`              | `2023.7.22` | `2024.7.4` |
+| `cffi`                 | `1.17`      | `2.0.x`    |
+| `cryptography`         | `41.0.2`    | `48.0.1`   |
+| `dnspython`            | `2.0`       | `2.6.1`    |
+| `idna`                 | `2.8`       | `3.15`     |
+| `Jinja2`               | `2.10.3`    | `3.1.5`    |
+| `MarkupSafe`           | `1.1.1`     | `2.0`      |
+| `pip`                  | not pinned  | `26.1.2+`  |
+| `pyasn1`               | `0.4.8`     | `0.6.4`    |
+| `requests`             | `2.30`      | `2.33`     |
+| `setuptools`           | not pinned  | `83+`      |
+| `urllib3`              | `2.6.3`     | `2.7`      |
+| `wheel`                | not pinned  | `0.46.2+`  |
+
 ## [1.22.0] - 2026-04-09
 
 ### Dependencies
