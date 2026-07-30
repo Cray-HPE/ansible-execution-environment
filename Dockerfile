@@ -1,7 +1,7 @@
 #
 # MIT License
 #
-# (C) Copyright 2019-2024, 2026 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2019-2026 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -39,7 +39,9 @@ ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/v${SOPS_VE
 
 # Community SOPS v1 is the last major version before support was dropped for Ansible 2.14 and earlier
 # Do not move to v2+ unless the Ansible version is also updated
-ARG COMMUNITY_SOPS_VERSION=1.9.1
+ARG COMMUNITY_SOPS_VERSION=2.0.5
+ARG COMMUNITY_VAULT_VERSION=3.4.0
+ARG AMAZON_AWS_VERSION=5.5.4
 
 # Do zypper operations using a wrapper script, to isolate the necessary artifactory authentication
 COPY zypper-docker-build.sh /
@@ -76,9 +78,6 @@ RUN --mount=type=secret,id=netrc,target=/root/.netrc \
     python3 --version && \
     python3 -m pip install --no-cache-dir -U pip wheel && \
     python3 -m pip install --no-cache-dir -r requirements.txt && \
-    python3 -m pip list --format freeze && \
-    find . -iname '/opt/cray/ansible/requirements/*.txt' -print -exec \
-        python3 -m pip install --no-cache-dir -c constraints.txt -r "{}" \; && \
     python3 -m pip list --format freeze
 
 # Stage our buildtime configuration
@@ -96,22 +95,21 @@ RUN cp $(python3 -m ara.setup.callback_plugins)/*.py /usr/share/ansible/plugins/
 
 # Add community modules and pre-install necessary binaries to support them from the distro
 RUN curl -L --output sops.rpm ${SOPS_RPM_SOURCE} && rpm -ivh sops.rpm
-# Because we are using ansible-core 2.11, our ansible.cfg file points to old-galaxy.ansible.com
-# This is fine for everything we want to install except for the SOPS community package, because
-# the version we want is not published there (although it does still support ansible-core 2.11).
-# So that collection is installed with a second command, pointing to galaxy.ansible.com
-RUN ansible-galaxy collection install  \
-        amazon.aws:5.2.0 \
-        ansible.netcommon \
-        ansible.posix \
-        ansible.utils \
-        containers.podman \
-        community.crypto \
-        community.general \
-        community.hashi_vault:3.0.0 \
-        community.libvirt \
-        kubernetes.core && \
-    ansible-galaxy collection install community.sops:$COMMUNITY_SOPS_VERSION --server https://galaxy.ansible.com/
+RUN ansible-galaxy collection install -vvv \
+        amazon.aws:${AMAZON_AWS_VERSION} \
+        ansible.netcommon:5.3.0 \
+        ansible.posix:1.5.4 \
+        ansible.utils:2.12.0 \
+        ceph.automation:1.1.0 \
+        containers.podman:1.10.4 \
+        community.crypto:2.15.1 \
+        community.general:7.5.9 \
+        community.hashi_vault:${COMMUNITY_VAULT_VERSION} \
+        community.kubernetes \
+        community.libvirt:1.4.0 \
+        community.sops:$COMMUNITY_SOPS_VERSION \
+        hpe.ilo \
+        kubernetes.core:3.3.1
 
 # Stage our default ansible variables
 COPY cray_ansible_defaults.yaml /

@@ -1,3 +1,7 @@
+--trusted-host arti.hpc.amslabs.hpecorp.net
+--trusted-host artifactory.algol60.net
+--index-url https://arti.hpc.amslabs.hpecorp.net:443/artifactory/api/pypi/pypi-remote/simple
+--extra-index-url http://artifactory.algol60.net/artifactory/csm-python-modules/simple
 -c constraints.txt
 ansible-core
 ara
@@ -9,3 +13,24 @@ openshift
 pexpect
 redis
 jmespath
+
+# Additional modules that we want to install so that they will be available
+# for scripts that may be run by Ansible roles inside the AEE container
+annotated-types
+boto3
+botocore
+cray-product-catalog
+Jinja2
+jsonref
+jsonschema
+netaddr
+pydantic
+PyJWT
+python-dateutil
+python-keycloak
+PyYAML
+requests
+requests-retry-session
+semver
+typing_extensions
+urllib3
