@@ -13,6 +13,8 @@ this does, see the README.md entry.
 
 ### Dependencies
 
+- CASMCMS-9507: Revise Snyk ignore file to specifically target GPL-3 warnings for ARA and Ansible.
+
 - CASMCMS-9507: Update Python modules to resolve CVEs
 
 | Package                | From        | To         |

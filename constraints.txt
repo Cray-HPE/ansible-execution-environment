@@ -1,5 +1,11 @@
+# If the ansible-core version is changed here, it should also be
+# updated in Ignore-Known-CVEs.snyk, unless the new version is no
+# longer GPL-3
 ansible-core>=2.11.12,<2.12
 # This should match the ARA version in the cfs-ara repo
+# If the ara version is changed here, it should also be
+# updated in Ignore-Known-CVEs.snyk, unless the new version is no
+# longer GPL-3
 ara==1.7.2
 asn1crypto>=0.24,<0.25
 bcrypt>=3.1.7,<3.2
