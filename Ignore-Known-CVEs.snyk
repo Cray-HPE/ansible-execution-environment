@@ -2,9 +2,14 @@
 version: v1.25.1
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  GPL-3.0:
-    - '*':
+  'snyk:lic:pip:ara:GPL-3.0':
+    - '/requirements.txt@* › ara@1.7.2':
         reason: 'Unavoidable with ARA'
+        expires: 2142-01-01T00:00:00.000Z
+        created: 2026-03-11T18:10:13.783Z
+  'snyk:lic:pip:ansible-core:GPL-3.0':
+    - '/requirements.txt@* › ansible-core@2.11.12':
+        reason: 'Unavoidable with Ansible'
         expires: 2142-01-01T00:00:00.000Z
         created: 2026-03-11T18:10:13.783Z
 patch: {}

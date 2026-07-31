@@ -33,12 +33,12 @@ ARG CSM_SSH_KEYS_VERSION=@RPM_VERSION@
 
 # Ideally the SOPS version in AEE should match or exceed the SOPS version installed on the Kubernetes NCNs
 # See node-images repo, metal-provision/group_vars/kubernetes/packages.suse.yml
-ARG SOPS_VERSION=3.12.2
+ARG SOPS_VERSION=3.13.3
 ARG SOPS_REBUILD_ID=1
 ARG SOPS_RPM_SOURCE=https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-${SOPS_VERSION}-${SOPS_REBUILD_ID}.${ARCH}.rpm
 
 # Community SOPS v1 is the last major version before support was dropped for Ansible 2.14 and earlier
-# Do not move to v2+ unless the Ansible version is also updated
+# Do not move to v2+ unless the Ansible version is compatible
 ARG COMMUNITY_SOPS_VERSION=1.9.1
 
 # Do zypper operations using a wrapper script, to isolate the necessary artifactory authentication
@@ -74,7 +74,7 @@ COPY requirements.txt constraints.txt /
 ENV LANG=C.utf8
 RUN --mount=type=secret,id=netrc,target=/root/.netrc \
     python3 --version && \
-    python3 -m pip install --no-cache-dir -U pip wheel && \
+    python3 -m pip install --no-cache-dir -U -c constraints.txt pip wheel && \
     python3 -m pip install --no-cache-dir -r requirements.txt && \
     python3 -m pip list --format freeze && \
     find . -iname '/opt/cray/ansible/requirements/*.txt' -print -exec \
