@@ -38,6 +38,9 @@ this does, see the README.md entry.
 | `urllib3`              | `2.6.3`     | `2.7`      |
 | `wheel`                | not pinned  | `0.46.2+`  |
 
+- CASMCMS-9507: Resolve CVEs
+    - Update SOPS from `3.12.2` to `3.13.3`
+
 ## [1.22.0] - 2026-04-09
 
 ### Dependencies
