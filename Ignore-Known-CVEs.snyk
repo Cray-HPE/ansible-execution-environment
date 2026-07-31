@@ -8,8 +8,18 @@ ignore:
         expires: 2142-01-01T00:00:00.000Z
         created: 2026-03-11T18:10:13.783Z
   'snyk:lic:pip:ansible-core:GPL-3.0':
-    - '/requirements.txt@* › ansible-core@2.15.13':
+    - '/requirements.txt@* › ansible-core@2.16.19':
         reason: 'Unavoidable with Ansible'
         expires: 2142-01-01T00:00:00.000Z
         created: 2026-03-11T18:10:13.783Z
+  SNYK-PYTHON-ANSIBLECORE-17177022:
+    - '/requirements.txt@* › ansible-core@2.16.19':
+        reason: 'False positive. The commit that fixes this CVE is present in v2.16.19'
+        expires: 2142-01-01T00:00:00.000Z
+        created: 2026-07-31T18:10:13.783Z
+  SNYK-PYTHON-ANSIBLECORE-18233949:
+    - '/requirements.txt@* › ansible-core@2.16.19':
+        reason: 'Cannot easily remediate this because it requires Ansible 2.17, which does not support Python 3.6'
+        expires: 2142-01-01T00:00:00.000Z
+        created: 2026-07-31T18:10:13.783Z
 patch: {}

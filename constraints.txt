@@ -2,12 +2,21 @@
 # updated in Ignore-Known-CVEs.snyk, unless the new version is no
 # longer GPL-3
 # SOPS v3.13 requires ansible-core >= 2.15
-ansible-core>=2.15.13,<2.16
+# ansible-core 2.15 contains CVEs that are resolved in 2.18.18
+# However, ansible 2.16 is the last Ansible version to support Python 3.6 (which is what it
+# uses when running on our SLES nodes). Accordingly, the best we can do in terms of CVE
+# resolution is 2.16.19
+# If upgrading ansible-core, be sure not to go to a version impacted by
+# the following CVE:
+# https://github.com/pypa/advisory-database/blob/main/vulns/ansible-core/PYSEC-2026-3458.yaml
+ansible-core>=2.16.19,<2.17
+
 # This should match the ARA version in the cfs-ara repo
 # If the ara version is changed here, it should also be
 # updated in Ignore-Known-CVEs.snyk, unless the new version is no
 # longer GPL-3
 ara==1.7.2
+
 asn1crypto>=0.24,<0.25
 bcrypt>=3.1.7,<3.2
 certifi==2024.7.4
