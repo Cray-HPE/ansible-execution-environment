@@ -1,7 +1,8 @@
 # If the ansible-core version is changed here, it should also be
 # updated in Ignore-Known-CVEs.snyk, unless the new version is no
 # longer GPL-3
-ansible-core>=2.11.12,<2.12
+# SOPS v3.13 requires ansible-core >= 2.15
+ansible-core>=2.15.13,<2.16
 # This should match the ARA version in the cfs-ara repo
 # If the ara version is changed here, it should also be
 # updated in Ignore-Known-CVEs.snyk, unless the new version is no
