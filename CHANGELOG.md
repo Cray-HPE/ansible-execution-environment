@@ -19,7 +19,7 @@ this does, see the README.md entry.
 
 | Package                | From        | To         |
 |------------------------|-------------|------------|
-| `ansible-core`         | `2.11.12`   | `2.15`     |
+| `ansible-core`         | `2.11.12`   | `2.18.18`  |
 | `certifi`              | `2023.7.22` | `2024.7.4` |
 | `cffi`                 | `1.17`      | `2.0`      |
 | `cryptography`         | `41.0.2`    | `48.0.1`   |
