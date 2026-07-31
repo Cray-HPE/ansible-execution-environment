@@ -11,6 +11,8 @@ this does, see the README.md entry.
 
 ## [Unreleased]
 
+## [1.23.0] - 2026-07-31
+
 ### Dependencies
 
 - CASMCMS-9507: Revise Snyk ignore file to specifically target GPL-3 warnings for ARA and Ansible.
